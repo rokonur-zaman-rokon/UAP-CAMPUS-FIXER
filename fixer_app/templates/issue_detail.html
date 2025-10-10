@@ -1,0 +1,6 @@
+<h1>{{ issue.title }}</h1>
+<p>Status: {{ issue.status }}</p>
+<p>Priority: {{ issue.priority }}</p>
+<p>Description: {{ issue.description }}</p>
+<p>Location: {{ issue.location }}</p>
+<p>Reported by: {% if issue.anonymous %}Anonymous{% else %}{{ issue.reporter }}{% endif %}</p>
