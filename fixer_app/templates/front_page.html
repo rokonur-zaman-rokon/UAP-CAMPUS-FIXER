@@ -1,244 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UAP Campus Fixer | Fast, Organized Issue Reporting</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <style>
-        /* Custom styles for the campus image and font */
-        html {
-            /* Pure CSS smooth scrolling */
-            scroll-behavior: smooth; 
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UAP Campus Fixer | Fast, Organized Issue Reporting</title>
 
-        /* Define the primary color (UAP Purple/Deep Tone - Violet 800) */
-        .uap-primary {
-            background-color: #4c1d95; /* Tailwind violet-800 */
-        }
-        /* Define the accent color (UAP Pink/Vibrant Tone - Pink 500) */
-        .uap-accent {
-            color: #ec4899; /* Tailwind pink-500 */
-        }
-        .uap-border-accent {
-            border-color: #ec4899;
-        }
-        .uap-text-primary {
-            color: #4c1d95;
-        }
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-        /* Hero section specific styling for the background image */
-        .hero-bg {
-            background-image: url('uploaded:image_06605c.jpg-4addd855-a84b-4dc2-b426-3efe88755d43');
-            background-size: cover;
-            background-position: center 25%; /* Adjust to show the building prominently */
-            position: relative;
-        }
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
 
-        /* Overlay for better text readability on the image */
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6); /* Dark overlay */
-        }
-        
-        /* Utility for better button interaction */
-        .cta-button {
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        /* Adjusted shadow color to match the new pink accent */
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(236, 72, 153, 0.4);
-        }
-    </style>
+    /* Hero background with overlay */
+    .hero-bg {
+        background: linear-gradient(rgba(80, 66, 181, 0.6), rgba(128, 146, 182, 0.6)), 
+                    url('images/Campus.png') center/cover no-repeat;
+        height: 100vh; /* full viewport height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+</style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Navigation Bar (Fixed Top) -->
-    <header class="sticky top-0 z-50 bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo/Title -->
-                <a href="#" class="flex-shrink-0">
-                    <span class="text-2xl font-extrabold uap-text-primary">UAP Campus Fixer</span>
-                </a>
+  <!-- Navbar -->
+  <header class="sticky top-0 bg-white shadow z-50">
+    <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
+      <div class="flex items-center space-x-2">
+        <img src="images/logo.png" class="h-8" alt="UAP Logo">
+        <span class="text-2xl font-extrabold text-violet-800"> UAP Campus Fixer</span>
+      </div>
+      <div class="hidden md:flex space-x-6 text-gray-600 font-medium">
+        <a href="#how" class="hover:text-violet-800">How It Works</a>
+        <a href="#features" class="hover:text-violet-800">Features</a>
+        <a href="#" class="hover:text-violet-800">Admin Login</a>
+        <a href="#report" class="bg-violet-800 text-white px-4 py-2 rounded-lg hover:bg-violet-900">Report Issue</a>
+      </div>
+      <a href="#report" class="md:hidden bg-violet-800 text-white px-3 py-2 rounded-lg">Report</a>
+    </nav>
+  </header>
 
-                <!-- Desktop Navigation (Will hide the navigation items on mobile purely using Tailwind's `md:flex` class) -->
-                <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="#how-it-works" class="text-gray-600 hover:uap-text-primary transition duration-150">How It Works</a>
-                    <a href="#features" class="text-gray-600 hover:uap-text-primary transition duration-150">Features</a>
-                    <a href="#" class="text-gray-600 hover:uap-text-primary transition duration-150">Admin Login</a>
-                    <button class="uap-primary text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:opacity-90 transition duration-150 cta-button">
-                        Report Issue
-                    </button>
-                </nav>
-                
-                <!-- Placeholder for Mobile Menu (No JS, so just show a fixed link) -->
-                <a href="#" class="md:hidden uap-primary text-white px-3 py-1.5 text-sm rounded-lg font-semibold shadow-md">
-                    Report
-                </a>
+  <!-- Hero Section -->
+  <section class="hero-bg h-[500px] flex items-center justify-center text-center text-white relative">
+    <div class="px-6">
+      <h1 class="text-4xl md:text-6xl font-extrabold mb-4">UAP Campus Fixer</h1>
+      <p class="text-lg md:text-2xl text-gray-200 mb-6">Report. Track. Resolve. — A Smarter Way to Improve Your Campus</p>
+      <a href="#report" class="bg-white text-violet-800 font-bold px-8 py-3 rounded-xl shadow-lg hover:bg-gray-100 transition">Start Reporting</a>
+    </div>
+  </section>
 
-            </div>
+  <!-- About Section -->
+  <section class="py-16 px-6 text-center max-w-4xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold text-violet-800 mb-4">Making Campus Management Transparent</h2>
+    <p class="text-gray-600 text-lg">
+      UAP Campus Fixer is a Django-based platform helping students quickly report issues — from broken chairs to slow Wi-Fi — directly to the responsible authority, ensuring faster resolutions and a better learning environment.
+    </p>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="bg-gray-100 py-16 px-6">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-3xl font-extrabold text-violet-800 mb-10">Core Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl border-t-4 border-pink-500">
+          <h3 class="text-xl font-bold text-violet-800 mb-2">Issue Categorization</h3>
+          <p class="text-gray-600">Tag reports by type (IT, Maintenance, Safety) for instant routing.</p>
         </div>
-    </header>
 
-    <!-- Hero Section (Campus Image Background) -->
-    <section class="hero-bg h-96 md:h-[500px] flex items-center justify-center relative rounded-b-xl overflow-hidden shadow-2xl">
-        <div class="hero-overlay"></div>
-        <div class="text-center relative z-10 px-4 max-w-4xl">
-            <h1 class="text-4xl sm:text-6xl font-extrabold text-white leading-tight mb-4">
-                UAP Campus Fixer
-            </h1>
-            <p class="text-xl sm:text-2xl text-gray-200 font-light mb-8">
-                Your direct line to a better campus. **Report. Track. Resolve.**
-            </p>
-            <button class="cta-button bg-white text-lg uap-text-primary font-bold px-8 py-3 rounded-xl shadow-xl border-b-4 border-r-4 uap-border-accent hover:bg-gray-100 transition duration-300">
-                Start Reporting Now
-            </button>
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl border-t-4 border-pink-500">
+          <h3 class="text-xl font-bold text-violet-800 mb-2">Real-Time Updates</h3>
+          <p class="text-gray-600">Track progress from Reported → In Progress → Resolved.</p>
         </div>
-    </section>
 
-    <!-- Introduction/Goal Section -->
-    <section class="py-16 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-5xl mx-auto text-center">
-            <h2 class="text-3xl sm:text-4xl font-bold uap-text-primary mb-4">
-                Making Campus Management Transparent
-            </h2>
-            <p class="text-xl text-gray-600 leading-relaxed">
-                UAP Campus Fixer is the Django-based platform designed to make issue reporting **fast, organized, and transparent**. We empower students to report problems—from a broken chair to slow internet—directly to the appropriate authority, ensuring quick resolution and a better learning environment for everyone.
-            </p>
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl border-t-4 border-pink-500">
+          <h3 class="text-xl font-bold text-violet-800 mb-2">Admin Dashboard</h3>
+          <p class="text-gray-600">Authorities manage, assign, and prioritize reports efficiently.</p>
         </div>
-    </section>
 
-    <!-- Features Section -->
-    <section id="features" class="py-16 bg-gray-100 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl font-extrabold text-center uap-text-primary mb-12">
-                Core Features
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                
-                <!-- Feature 1: Issue Categorization -->
-                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-t-4 border-pink-500">
-                    <svg class="h-10 w-10 uap-accent mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                    </svg>
-                    <h3 class="text-xl font-bold mb-3 uap-text-primary">Issue Categorization</h3>
-                    <p class="text-gray-600">
-                        Easily tag your report (Maintenance, IT, Classroom, Safety) to ensure it reaches the right department instantly.
-                    </p>
-                </div>
-
-                <!-- Feature 2: Real-Time Updates -->
-                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-t-4 border-pink-500">
-                    <svg class="h-10 w-10 uap-accent mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 4.04A12.001 12.001 0 0012 21a12.001 12.001 0 008.618-14.966z"/>
-                    </svg>
-                    <h3 class="text-xl font-bold mb-3 uap-text-primary">Real-Time Updates</h3>
-                    <p class="text-gray-600">
-                        Track the progress of your submitted issue from **Reported** to **In Progress** to **Resolved** in real-time.
-                    </p>
-                </div>
-
-                <!-- Feature 3: Admin Dashboard -->
-                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-t-4 border-pink-500">
-                    <svg class="h-10 w-10 uap-accent mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                    </svg>
-                    <h3 class="text-xl font-bold mb-3 uap-text-primary">Efficient Admin View</h3>
-                    <p class="text-gray-600">
-                        UAP authorities have a powerful dashboard to prioritize, assign, and manage all incoming reports efficiently.
-                    </p>
-                </div>
-
-                <!-- Feature 4: Student Feedback Loop -->
-                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-t-4 border-pink-500">
-                    <svg class="h-10 w-10 uap-accent mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                    </svg>
-                    <h3 class="text-xl font-bold mb-3 uap-text-primary">Quick Resolution</h3>
-                    <p class="text-gray-600">
-                        By cutting out unnecessary delays, we ensure that issues are not just reported, but rapidly addressed and confirmed.
-                    </p>
-                </div>
-            </div>
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl border-t-4 border-pink-500">
+          <h3 class="text-xl font-bold text-violet-800 mb-2">Quick Resolution</h3>
+          <p class="text-gray-600">Fast, organized issue management — no delays or confusion.</p>
         </div>
-    </section>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="py-20 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-3xl font-extrabold text-center uap-text-primary mb-12">
-                How It Works in 3 Simple Steps
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
-                
-                <!-- Step 1 -->
-                <div class="p-6 bg-white rounded-xl">
-                    <span class="text-6xl font-bold uap-accent">1</span>
-                    <h3 class="text-2xl font-semibold mt-4 mb-2 uap-text-primary">Submit Report</h3>
-                    <p class="text-gray-600">
-                        Log in and fill out the simple form, add a photo, and select a category. It takes less than 60 seconds.
-                    </p>
-                </div>
+      </div>
+    </div>
+  </section>
 
-                <!-- Step 2 -->
-                <div class="p-6 bg-white rounded-xl">
-                    <span class="text-6xl font-bold uap-accent">2</span>
-                    <h3 class="text-2xl font-semibold mt-4 mb-2 uap-text-primary">Authority Acts</h3>
-                    <p class="text-gray-600">
-                        The relevant UAP authority receives an immediate notification and assigns a maintenance or IT team member.
-                    </p>
-                </div>
+  <!-- How It Works Section -->
+  <section id="how" class="py-20 px-6 text-center bg-white">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-extrabold text-violet-800 mb-12">How It Works</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-                <!-- Step 3 -->
-                <div class="p-6 bg-white rounded-xl">
-                    <span class="text-6xl font-bold uap-accent">3</span>
-                    <h3 class="text-2xl font-semibold mt-4 mb-2 uap-text-primary">Track & Verify</h3>
-                    <p class="text-gray-600">
-                        Monitor status updates on your dashboard until the issue is marked as **Resolved**.
-                    </p>
-                </div>
-
-            </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+          <span class="text-5xl font-bold text-pink-500">1</span>
+          <h3 class="text-xl font-semibold mt-3 mb-2 text-violet-800">Submit Report</h3>
+          <p class="text-gray-600">Fill out a quick form, add a photo & category — done in 60 seconds.</p>
         </div>
-    </section>
 
-    <!-- Call to Action Banner -->
-    <section class="uap-primary text-white py-16 px-4 sm:px-6 lg:px-8 rounded-t-xl">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-            <h2 class="text-3xl sm:text-4xl font-extrabold mb-6 md:mb-0">
-                Ready to improve the UAP campus?
-            </h2>
-            <button class="cta-button bg-pink-500 text-white text-xl font-bold px-8 py-3 rounded-xl shadow-xl hover:bg-pink-600 transition duration-300">
-                <span class="inline-block mr-2">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
-                </span>
-                Submit a Report
-            </button>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+          <span class="text-5xl font-bold text-pink-500">2</span>
+          <h3 class="text-xl font-semibold mt-3 mb-2 text-violet-800">Authority Acts</h3>
+          <p class="text-gray-600">The right department gets notified instantly for action.</p>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8 px-4 sm:px-6 lg:px-8 rounded-b-xl">
-        <div class="max-w-7xl mx-auto text-center text-gray-400">
-            <p class="mb-2">© 2025 UAP Campus Fixer. Built for University of Asia Pacific.</p>
-            <div class="flex justify-center space-x-4">
-                <a href="#" class="hover:text-white transition duration-150">Privacy Policy</a>
-                <a href="#" class="hover:text-white transition duration-150">Terms of Service</a>
-            </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+          <span class="text-5xl font-bold text-pink-500">3</span>
+          <h3 class="text-xl font-semibold mt-3 mb-2 text-violet-800">Track & Verify</h3>
+          <p class="text-gray-600">Monitor the issue’s progress until it’s marked resolved.</p>
         </div>
-    </footer>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section id="report" class="bg-violet-800 text-white py-16 px-6 text-center">
+    <h2 class="text-3xl md:text-4xl font-extrabold mb-6">Ready to Improve the UAP Campus?</h2>
+    <a href="#" class="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold px-8 py-3 rounded-xl shadow-lg transition">Submit a Report</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 text-center py-8">
+    <p class="mb-2">© 2025 UAP Campus Fixer. Built for University of Asia Pacific.</p>
+    <div class="space-x-4">
+      <a href="#" class="hover:text-white">Privacy Policy</a>
+      <a href="#" class="hover:text-white">Terms of Service</a>
+    </div>
+  </footer>
+
 </body>
 </html>
