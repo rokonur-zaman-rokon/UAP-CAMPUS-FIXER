@@ -16,6 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+import os
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,3 +30,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('fixer_app.urls')),
 ]
+# CHANGE THIS BLOCK: Convert the Path object to a string using str()
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.STATIC_URL, 
+        document_root=str(settings.STATICFILES_DIRS[0])
+    )
