@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +20,7 @@
     /* Hero background with overlay */
     .hero-bg {
         background: linear-gradient(rgba(80, 66, 181, 0.6), rgba(128, 146, 182, 0.6)), 
-                    url('images/Campus.png') center/cover no-repeat;
+                    url('{% static "images/Campus.png" %}') center/cover no-repeat;
         height: 100vh; /* full viewport height */
         display: flex;
         align-items: center;
@@ -36,7 +37,7 @@
   <header class="sticky top-0 bg-white shadow z-50">
     <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
       <div class="flex items-center space-x-2">
-        <img src="images/logo.png" class="h-8" alt="UAP Logo">
+        <img src="{% static 'images/logo.png' %}"class="h-8" alt="UAP Logo">
         <span class="text-2xl font-extrabold text-violet-800"> UAP Campus Fixer</span>
       </div>
       <div class="hidden md:flex space-x-6 text-gray-600 font-medium">
