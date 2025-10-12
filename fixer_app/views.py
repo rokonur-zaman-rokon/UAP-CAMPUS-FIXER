@@ -3,12 +3,32 @@ from django.contrib.auth import login, authenticate
 from .forms import SignUpForm, IssueForm
 from .models import Issue, Profile
 
+def front_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    return render(request, 'front_page.html')
+
+
 # Home / dashboard
 def home(request):
     if request.user.is_authenticated:
         issues = Issue.objects.all()
         return render(request, 'home.html', {'issues': issues})
     return redirect('signup')
+
+from django.contrib.auth import authenticate, login as auth_login
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'front_page.html', {'error': 'Invalid credentials'})
+    return render(request, 'front_page.html')
 
 
 # User signup
