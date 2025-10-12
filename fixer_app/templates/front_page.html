@@ -34,19 +34,34 @@
 <body class="bg-gray-50 text-gray-800">
 
   <!-- Navbar -->
-<header class="sticky top-0 bg-blue-600 shadow z-50">
+<header class="sticky top-0 bg-white shadow-md z-50">
   <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
-    <div class="flex items-center space-x-2">
-      <img src="{% static 'images/logo.png' %}" class="h-8" alt="UAP Logo">
-      <span class="text-2xl font-extrabold text-white"> UAP Campus Fixer</span>
+    <!-- Logo -->
+    <div class="flex items-center space-x-3">
+      <img src="{% static 'images/logo.png' %}" class="h-10" alt="UAP Logo">
+      <span class="text-2xl font-extrabold text-violet-800">UAP Campus Fixer</span>
     </div>
-    <div class="hidden md:flex space-x-6 text-white font-medium">
-      <a href="#how" class="hover:text-gray-200">How It Works</a>
-      <a href="#features" class="hover:text-gray-200">Features</a>
-      <a href="#" class="hover:text-gray-200">Admin Login</a>
-      <a href="#report" class="bg-violet-800 text-white px-4 py-2 rounded-lg hover:bg-violet-900">Report Issue</a>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex space-x-8 text-gray-700 font-medium">
+      <a href="#how" class="relative hover:text-violet-800 transition duration-200">
+        How It Works
+        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-violet-800 transition-all duration-200 group-hover:w-full"></span>
+      </a>
+      <a href="#features" class="relative hover:text-violet-800 transition duration-200">
+        Features
+        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-violet-800 transition-all duration-200 group-hover:w-full"></span>
+      </a>
+      <a href="#" class="relative hover:text-violet-800 transition duration-200">Admin Login</a>
+      <a href="#report" class="bg-violet-800 text-white px-5 py-2 rounded-lg shadow hover:bg-violet-900 transition duration-200">
+        Report Issue
+      </a>
     </div>
-    <a href="#report" class="md:hidden bg-violet-800 text-white px-3 py-2 rounded-lg">Report</a>
+
+    <!-- Mobile Menu -->
+    <a href="#report" class="md:hidden bg-violet-800 text-white px-4 py-2 rounded-lg shadow hover:bg-violet-900 transition duration-200">
+      Report
+    </a>
   </nav>
 </header>
 
