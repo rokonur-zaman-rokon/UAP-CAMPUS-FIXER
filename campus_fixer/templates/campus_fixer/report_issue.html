@@ -1,0 +1,143 @@
+{% extends 'campus_fixer/base.html' %}
+
+{% block title %}Report Issue{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div style="max-width: 800px; margin: 2rem auto;">
+        <div class="card">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 2rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2 style="color: var(--dark); margin-bottom: 0.5rem;">Report an Issue</h2>
+                <p style="color: var(--gray);">Help us make campus better by reporting maintenance issues</p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Issue Details -->
+                <div style="background: var(--light); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--dark); margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 8px;"></i>
+                        Issue Details
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Issue Title *</label>
+                        <input type="text" name="title" class="form-control" placeholder="Brief description of the issue" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Category *</label>
+                        <select name="category" class="form-control" required>
+                            <option value="">Select a category</option>
+                            <option value="electrical">Electrical</option>
+                            <option value="plumbing">Plumbing</option>
+                            <option value="carpentry">Carpentry</option>
+                            <option value="cleaning">Cleaning</option>
+                            <option value="it">IT Related</option>
+                            <option value="furniture">Furniture</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Priority *</label>
+                        <select name="priority" class="form-control" required>
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Location Details -->
+                <div style="background: var(--light); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--dark); margin-bottom: 1rem;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 8px;"></i>
+                        Location Details
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Building *</label>
+                        <select name="building" class="form-control" required>
+                            <option value="">Select building</option>
+                            <option value="academic">Academic Building</option>
+                            <option value="library">Library</option>
+                            <option value="hostel">Hostel</option>
+                            <option value="cafeteria">Cafeteria</option>
+                            <option value="sports">Sports Complex</option>
+                            <option value="admin">Administrative Building</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Specific Location *</label>
+                        <input type="text" name="location" class="form-control" placeholder="e.g., Room 302, 3rd Floor, Corridor A" required>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-file-alt" style="color: var(--primary); margin-right: 8px;"></i>
+                        Detailed Description *
+                    </label>
+                    <textarea name="description" class="form-control" rows="6" placeholder="Please provide a detailed description of the issue..." required></textarea>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-camera" style="color: var(--primary); margin-right: 8px;"></i>
+                        Attach Photo (Optional)
+                    </label>
+                    <input type="file" name="image" class="form-control" accept="image/*">
+                    <small style="color: var(--gray); margin-top: 0.5rem; display: block;">
+                        Upload a photo to help us understand the issue better
+                    </small>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Issue Report
+                </button>
+            </form>
+        </div>
+
+        <!-- Help Section -->
+        <div class="card" style="margin-top: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h3 style="margin-bottom: 1rem; display: flex; align-items: center;">
+                <i class="fas fa-lightbulb" style="margin-right: 10px;"></i>
+                Tips for Better Issue Reporting
+            </h3>
+            <ul style="margin: 0; padding-left: 20px;">
+                <li style="margin-bottom: 0.5rem;">Be specific about the exact location</li>
+                <li style="margin-bottom: 0.5rem;">Provide clear and detailed description</li>
+                <li style="margin-bottom: 0.5rem;">Mention how the issue is affecting you or others</li>
+                <li>Include any safety concerns if applicable</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control {
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+    }
+    
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
+</style>
+{% endblock %}

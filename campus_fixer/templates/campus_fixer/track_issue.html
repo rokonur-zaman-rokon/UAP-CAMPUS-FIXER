@@ -1,0 +1,143 @@
+{% extends 'campus_fixer/base.html' %}
+
+{% block title %}Track Issue{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 2rem;">
+                <i class="fas fa-search"></i>
+            </div>
+            <h2 style="color: var(--dark); margin-bottom: 0.5rem;">Track Your Issues</h2>
+            <p style="color: var(--gray);">Monitor the status of your maintenance requests</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div style="background: var(--light); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+            <h3 style="color: var(--dark); margin-bottom: 1rem;">
+                <i class="fas fa-search" style="color: var(--primary); margin-right: 8px;"></i>
+                Search by Issue ID
+            </h3>
+            <div style="display: flex; gap: 1rem;">
+                <input type="text" class="form-control" placeholder="Enter Issue ID (e.g., UAP001)">
+                <button class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                    Search
+                </button>
+            </div>
+        </div>
+
+        <!-- Issues List -->
+        <div>
+            <h3 style="color: var(--dark); margin-bottom: 1.5rem;">
+                <i class="fas fa-list" style="color: var(--primary); margin-right: 8px;"></i>
+                Your Reported Issues
+            </h3>
+
+            <div style="display: grid; gap: 1.5rem;">
+                <!-- Issue 1 -->
+                <div class="card" style="border-left: 4px solid var(--success);">
+                    <div style="display: flex; justify-content: between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                <h4 style="color: var(--dark); margin: 0;">Broken window in classroom 302</h4>
+                                <span style="background: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem;">
+                                    Resolved
+                                </span>
+                            </div>
+                            <p style="color: var(--gray); margin-bottom: 0.5rem;">
+                                <i class="fas fa-hashtag" style="margin-right: 5px;"></i>UAP001
+                            </p>
+                            <p style="color: var(--gray); margin-bottom: 1rem;">
+                                <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i>
+                                Academic Building, Room 302, 3rd Floor
+                            </p>
+                            <p style="color: var(--dark);">
+                                The window glass is broken and needs replacement. It's causing air leakage and noise.
+                            </p>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.875rem; color: var(--gray); margin-bottom: 0.5rem;">Jan 15, 2024</div>
+                            <button class="btn" style="background: var(--light); color: var(--dark);">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issue 2 -->
+                <div class="card" style="border-left: 4px solid var(--warning);">
+                    <div style="display: flex; justify-content: between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                <h4 style="color: var(--dark); margin: 0;">AC not working in library</h4>
+                                <span style="background: var(--warning); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem;">
+                                    In Progress
+                                </span>
+                            </div>
+                            <p style="color: var(--gray); margin-bottom: 0.5rem;">
+                                <i class="fas fa-hashtag" style="margin-right: 5px;"></i>UAP002
+                            </p>
+                            <p style="color: var(--gray); margin-bottom: 1rem;">
+                                <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i>
+                                Library, Reading Area, 2nd Floor
+                            </p>
+                            <p style="color: var(--dark);">
+                                Air conditioner stopped working suddenly. The room is getting very hot and uncomfortable for studying.
+                            </p>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.875rem; color: var(--gray); margin-bottom: 0.5rem;">Jan 16, 2024</div>
+                            <button class="btn" style="background: var(--light); color: var(--dark);">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issue 3 -->
+                <div class="card" style="border-left: 4px solid #e5e7eb;">
+                    <div style="display: flex; justify-content: between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                <h4 style="color: var(--dark); margin: 0;">Leaky faucet in washroom</h4>
+                                <span style="background: #e5e7eb; color: var(--dark); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem;">
+                                    Pending
+                                </span>
+                            </div>
+                            <p style="color: var(--gray); margin-bottom: 0.5rem;">
+                                <i class="fas fa-hashtag" style="margin-right: 5px;"></i>UAP003
+                            </p>
+                            <p style="color: var(--gray); margin-bottom: 1rem;">
+                                <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i>
+                                Academic Building, Washroom, Ground Floor
+                            </p>
+                            <p style="color: var(--dark);">
+                                The faucet in the second washroom is leaking continuously, wasting water and creating puddles.
+                            </p>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.875rem; color: var(--gray); margin-bottom: 0.5rem;">Jan 17, 2024</div>
+                            <button class="btn" style="background: var(--light); color: var(--dark);">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'campus_fixer/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Welcome Section -->
+    <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">
+        <div style="display: flex; justify-content: between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+            <div>
+                <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">
+                    Welcome back, {{ user.username }}! 👋
+                </h1>
+                <p style="opacity: 0.9; font-size: 1.1rem;">
+                    Here's what's happening with your maintenance requests
+                </p>
+            </div>
+            <a href="{% url 'report_issue' %}" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3);">
+                <i class="fas fa-plus-circle"></i>
+                Report New Issue
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+        <div class="card" style="text-align: center; border-left: 4px solid var(--primary);">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">5</div>
+            <div style="color: var(--gray); font-weight: 500;">Total Issues</div>
+        </div>
+        
+        <div class="card" style="text-align: center; border-left: 4px solid var(--warning);">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--warning); margin-bottom: 0.5rem;">2</div>
+            <div style="color: var(--gray); font-weight: 500;">Pending</div>
+        </div>
+        
+        <div class="card" style="text-align: center; border-left: 4px solid var(--success);">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem;">3</div>
+            <div style="color: var(--gray); font-weight: 500;">Resolved</div>
+        </div>
+        
+        <div class="card" style="text-align: center; border-left: 4px solid var(--error);">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--error); margin-bottom: 0.5rem;">0</div>
+            <div style="color: var(--gray); font-weight: 500;">Urgent</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+        <h2 style="margin-bottom: 1.5rem; color: var(--dark);">
+            <i class="fas fa-bolt" style="color: var(--accent); margin-right: 10px;"></i>
+            Quick Actions
+        </h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <a href="{% url 'report_issue' %}" class="btn btn-primary" style="text-align: center; padding: 1.5rem;">
+                <i class="fas fa-plus-circle" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                Report Issue
+            </a>
+            
+            <a href="{% url 'track_issue' %}" class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                Track Issues
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Issues -->
+    <div class="card">
+        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <h2 style="color: var(--dark); margin: 0;">
+                <i class="fas fa-history" style="color: var(--primary); margin-right: 10px;"></i>
+                Recent Issues
+            </h2>
+            <a href="{% url 'track_issue' %}" class="btn" style="background: var(--light); color: var(--dark);">
+                View All
+            </a>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--light);">
+                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Issue ID</th>
+                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Description</th>
+                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Status</th>
+                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem;">#UAP001</td>
+                        <td style="padding: 1rem;">Broken window in classroom 302</td>
+                        <td style="padding: 1rem;">
+                            <span style="background: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem;">
+                                Resolved
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">2024-01-15</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem;">#UAP002</td>
+                        <td style="padding: 1rem;">AC not working in library</td>
+                        <td style="padding: 1rem;">
+                            <span style="background: var(--warning); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem;">
+                                In Progress
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">2024-01-16</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem;">#UAP003</td>
+                        <td style="padding: 1rem;">Leaky faucet in washroom</td>
+                        <td style="padding: 1rem;">
+                            <span style="background: #e5e7eb; color: var(--dark); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem;">
+                                Pending
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">2024-01-17</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
