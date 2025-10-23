@@ -7,7 +7,8 @@ from .models import Issue, UserProfile, IssueUpdate, Feedback
 from .forms import CustomUserCreationForm, IssueForm, FeedbackForm
 
 def index(request):
-    return render(request, 'campus_fixer/index.html')
+    site_settings = SiteSettings.objects.first()  # assuming only one settings entry
+    return render(request, 'index.html', {'site_settings': site_settings})
 
 def register(request):
     if request.method == 'POST':

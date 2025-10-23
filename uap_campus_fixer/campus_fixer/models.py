@@ -89,3 +89,10 @@ class Feedback(models.Model):
     
     def __str__(self):
         return f"Feedback for {self.issue.ticket_id} - Rating: {self.rating}"
+    from django.db import models
+
+class SiteSettings(models.Model):
+    hero_background = models.ImageField(upload_to='hero_backgrounds/', blank=True, null=True)
+
+    def __str__(self):
+        return "Site Settings"

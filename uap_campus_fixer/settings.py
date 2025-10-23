@@ -124,3 +124,18 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
+# settings.py
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+import os
+
+STATIC_URL = '/static/'
+
+# For development, you may already have this:
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Add this for collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
