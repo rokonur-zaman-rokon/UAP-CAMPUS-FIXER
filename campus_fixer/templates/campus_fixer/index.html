@@ -16,9 +16,10 @@
                 <a href="{% url 'report_issue' %}" class="btn btn-primary btn-lg">
                     <i class="fas fa-plus-circle"></i> Report New Issue
                 </a>
-                <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-lg">
-                    <i class="fas fa-tachometer-alt"></i> Go to Dashboard
-                </a>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-lg" style="color: pink; border-color: pink;">
+                <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+                 </a>
+
             {% else %}
                 <a href="{% url 'register' %}" class="btn btn-primary btn-lg">
                     <i class="fas fa-rocket"></i> Get Started
@@ -98,7 +99,7 @@
     text-align: center;
     color: white;
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, rgba(58, 59, 85, 0.36), rgba(79,70,229,0.8)),
+    background: linear-gradient(135deg, rgba(48, 50, 52, 0.4), rgba(79,70,229,0.8)),
                 url("{% static 'campus_fixer/images/uap-bg.png' %}") center/cover no-repeat;
 }
 .hero-title {
@@ -116,6 +117,15 @@
     margin: 0.5rem;
     padding: 0.8rem 2rem;
     font-size: 1.1rem;
+}
+.btn-dashboard {
+    color: yellow !important;           /* normal text color */
+    border-color: yellow !important;    /* match border */
+    transition: color 0.3s ease, background 0.3s ease;
+}
+.btn-dashboard:hover {
+    color: white !important;            /* hover text color */
+    background-color: yellow !important; /* optional: yellow background on hover */
 }
 
 /* Features Section */
