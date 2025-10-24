@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from .models import Issue, UserProfile
 
 def index(request):
     return render(request, 'campus_fixer/index.html')
@@ -27,7 +28,7 @@ def register(request):
     else:
         form = UserCreationForm()
     
-    return render(request, 'campus_fixer/register.html')
+    return render(request, 'campus_fixer/register.html', {'form': form})
 
 def custom_login(request):
     if request.user.is_authenticated:
@@ -48,7 +49,7 @@ def custom_login(request):
     else:
         form = AuthenticationForm()
     
-    return render(request, 'campus_fixer/login.html')
+    return render(request, 'campus_fixer/login.html', {'form': form})
 
 def custom_logout(request):
     logout(request)
@@ -62,7 +63,29 @@ def dashboard(request):
 @login_required
 def report_issue(request):
     if request.method == 'POST':
-        # Handle issue submission
+        title = request.POST.get('title')
+        category = request.POST.get('category')
+        priority = request.POST.get('priority')
+        building = request.POST.get('building')
+        location = request.POST.get('location')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+
+        # Fetch user's profile info
+        profile = UserProfile.objects.filter(user=request.user).first()
+        user_type = profile.user_type if profile else 'student'
+        department = profile.department if profile else 'OTHERS'
+
+        Issue.objects.create(
+            user=request.user,
+            user_type=user_type,
+            department=department,
+            category=category,
+            location=location,
+            description=description,
+            image=image
+        )
+
         messages.success(request, 'Issue reported successfully! Your ticket has been created.')
         return redirect('dashboard')
     
@@ -70,4 +93,5 @@ def report_issue(request):
 
 @login_required
 def track_issue(request):
-    return render(request, 'campus_fixer/track_issue.html')
+    issues = Issue.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'campus_fixer/track_issue.html', {'issues': issues})

@@ -1,66 +1,78 @@
 {% extends 'campus_fixer/base.html' %}
+{% load static %}
 
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-<div class="content">
-    <div class="container">
-        <div class="card">
-            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin: 0; color: #2c3e50;">
+<div style="
+    background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
+                url('{% static 'campus_fixer/images/uap6.jpg' %}') center/cover no-repeat;
+    min-height: 100vh;
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+">
+
+    <div class="dashboard-container" style="max-width: 1200px; width: 100%; display: flex; flex-direction: column; gap: 2rem; color: white;">
+
+        <!-- Header -->
+        <div class="card" style="background: rgba(0,0,0,0.5); padding: 1.5rem; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0;">
                     <i class="fas fa-tachometer-alt" style="color: #3498db; margin-right: 10px;"></i>
                     Admin Dashboard
                 </h2>
-                <div style="color: #7f8c8d; font-size: 0.9rem;">
+                <div style="font-size: 0.9rem; opacity: 0.9;">
                     <i class="fas fa-clock" style="margin-right: 5px;"></i>
                     <span id="live-clock">{{ current_time|date:"M d, Y H:i:s" }}</span>
                 </div>
             </div>
+        </div>
 
-            {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-triangle{% endif %}" style="margin-right: 10px;"></i>
-                    {{ message }}
-                </div>
-                {% endfor %}
+        {% if messages %}
+        <div class="messages" style="background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 10px;">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-triangle{% endif %}" style="margin-right: 10px;"></i>
+                {{ message }}
             </div>
-            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
 
-            <!-- Quick Stats -->
-            <div class="stats-grid">
-                <div class="stat-card" style="border-top-color: #3498db;">
-                    <div class="stat-number" style="color: #3498db;">{{ total_issues }}</div>
-                    <div class="stat-label">Total Issues</div>
-                </div>
-                <div class="stat-card" style="border-top-color: #f39c12;">
-                    <div class="stat-number" style="color: #f39c12;">{{ pending_count }}</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card" style="border-top-color: #e74c3c;">
-                    <div class="stat-number" style="color: #e74c3c;">{{ in_progress_count }}</div>
-                    <div class="stat-label">In Progress</div>
-                </div>
-                <div class="stat-card" style="border-top-color: #27ae60;">
-                    <div class="stat-number" style="color: #27ae60;">{{ resolved_count }}</div>
-                    <div class="stat-label">Resolved</div>
-                </div>
+        <!-- Quick Stats -->
+        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div class="stat-card" style="background: rgba(0,0,0,0.5); border-top: 4px solid #3498db; padding: 1rem; border-radius: 8px;">
+                <div class="stat-number" style="color: #3498db;">{{ total_issues }}</div>
+                <div class="stat-label">Total Issues</div>
+            </div>
+            <div class="stat-card" style="background: rgba(0,0,0,0.5); border-top: 4px solid #f39c12; padding: 1rem; border-radius: 8px;">
+                <div class="stat-number" style="color: #f39c12;">{{ pending_count }}</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card" style="background: rgba(0,0,0,0.5); border-top: 4px solid #e74c3c; padding: 1rem; border-radius: 8px;">
+                <div class="stat-number" style="color: #e74c3c;">{{ in_progress_count }}</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+            <div class="stat-card" style="background: rgba(0,0,0,0.5); border-top: 4px solid #27ae60; padding: 1rem; border-radius: 8px;">
+                <div class="stat-number" style="color: #27ae60;">{{ resolved_count }}</div>
+                <div class="stat-label">Resolved</div>
             </div>
         </div>
 
         <!-- Recent Issues Table -->
-        <div class="card">
-            <h3 style="color: #2c3e50; margin-bottom: 1.5rem; display: flex; align-items: center;">
+        <div class="card" style="background: rgba(0,0,0,0.5); padding: 1.5rem; border-radius: 12px;">
+            <h3 style="display: flex; align-items: center; margin-bottom: 1rem;">
                 <i class="fas fa-list" style="color: #3498db; margin-right: 10px;"></i>
                 Recent Issues
             </h3>
 
             {% if all_issues %}
             <div style="overflow-x: auto;">
-                <table class="issues-table">
+                <table class="issues-table" style="width: 100%; color: white;">
                     <thead>
-                        <tr>
+                        <tr style="opacity: 0.8;">
                             <th>Ticket ID</th>
                             <th>User</th>
                             <th>Category</th>
@@ -73,12 +85,10 @@
                     <tbody>
                         {% for issue in all_issues %}
                         <tr>
-                            <td>
-                                <strong style="color: #e74c3c;">{{ issue.ticket_id }}</strong>
-                            </td>
+                            <td><strong style="color: #e74c3c;">{{ issue.ticket_id }}</strong></td>
                             <td>
                                 {% if issue.anonymous %}
-                                <span style="color: #7f8c8d;">
+                                <span style="opacity: 0.8;">
                                     <i class="fas fa-user-secret" style="margin-right: 5px;"></i>
                                     Anonymous
                                 </span>
@@ -96,7 +106,7 @@
                             </td>
                             <td>{{ issue.created_at|date:"M d, Y" }}</td>
                             <td>
-                                <a href="{% url 'track_issue_detail' issue.ticket_id %}" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                <a href="{% url 'track_issue_detail' issue.ticket_id %}" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; background: rgba(255,255,255,0.2); color: white;">
                                     <i class="fas fa-eye" style="margin-right: 5px;"></i>
                                     View
                                 </a>
@@ -107,8 +117,8 @@
                 </table>
             </div>
             {% else %}
-            <div style="text-align: center; padding: 3rem; color: #7f8c8d;">
-                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <div style="text-align: center; padding: 3rem; opacity: 0.8;">
+                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
                 <h4>No Issues Reported</h4>
                 <p>No maintenance issues have been reported yet.</p>
             </div>
@@ -116,61 +126,81 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="card">
-            <h3 style="color: #2c3e50; margin-bottom: 1.5rem; display: flex; align-items: center;">
+        <div class="card" style="background: rgba(0,0,0,0.5); padding: 1.5rem; border-radius: 12px;">
+            <h3 style="display: flex; align-items: center; margin-bottom: 1rem;">
                 <i class="fas fa-bolt" style="color: #f39c12; margin-right: 10px;"></i>
                 Quick Actions
             </h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                 <a href="/admin/campus_fixer/issue/" class="btn btn-primary" style="text-align: center;">
-                    <i class="fas fa-cog" style="margin-right: 8px;"></i>
-                    Manage Issues
+                    <i class="fas fa-cog" style="margin-right: 8px;"></i> Manage Issues
                 </a>
                 <a href="/admin/campus_fixer/userprofile/" class="btn btn-secondary" style="text-align: center;">
-                    <i class="fas fa-users" style="margin-right: 8px;"></i>
-                    Manage Users
+                    <i class="fas fa-users" style="margin-right: 8px;"></i> Manage Users
                 </a>
                 <a href="{% url 'dashboard' %}" class="btn" style="text-align: center; background: #27ae60;">
-                    <i class="fas fa-user" style="margin-right: 8px;"></i>
-                    User View
+                    <i class="fas fa-user" style="margin-right: 8px;"></i> User View
                 </a>
                 <button class="btn btn-print" style="text-align: center; background: #7f8c8d;">
-                    <i class="fas fa-print" style="margin-right: 8px;"></i>
-                    Print Report
+                    <i class="fas fa-print" style="margin-right: 8px;"></i> Print Report
                 </button>
             </div>
         </div>
 
         <!-- System Info -->
-        <div class="card">
-            <h3 style="color: #2c3e50; margin-bottom: 1.5rem; display: flex; align-items: center;">
+        <div class="card" style="background: rgba(0,0,0,0.5); padding: 1.5rem; border-radius: 12px;">
+            <h3 style="display: flex; align-items: center; margin-bottom: 1rem;">
                 <i class="fas fa-info-circle" style="color: #3498db; margin-right: 10px;"></i>
                 System Information
             </h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
-                    <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">System Status</h4>
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <h4 style="margin-bottom: 0.5rem;">System Status</h4>
                     <p style="color: #27ae60; margin: 0;">
-                        <i class="fas fa-check-circle" style="margin-right: 5px;"></i>
-                        All Systems Operational
+                        <i class="fas fa-check-circle" style="margin-right: 5px;"></i> All Systems Operational
                     </p>
                 </div>
-                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
-                    <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">Response Time</h4>
-                    <p style="color: #2c3e50; margin: 0;">
-                        <i class="fas fa-bolt" style="margin-right: 5px;"></i>
-                        Excellent Performance
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <h4 style="margin-bottom: 0.5rem;">Response Time</h4>
+                    <p style="margin: 0;">
+                        <i class="fas fa-bolt" style="margin-right: 5px;"></i> Excellent Performance
                     </p>
                 </div>
-                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
-                    <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">Uptime</h4>
-                    <p style="color: #2c3e50; margin: 0;">
-                        <i class="fas fa-server" style="margin-right: 5px;"></i>
-                        99.9% This Month
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <h4 style="margin-bottom: 0.5rem;">Uptime</h4>
+                    <p style="margin: 0;">
+                        <i class="fas fa-server" style="margin-right: 5px;"></i> 99.9% This Month
                     </p>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
+<style>
+    .card, .btn, .stat-card {
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn:hover {
+        opacity: 0.85;
+    }
+
+    table.issues-table th, table.issues-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    table.issues-table th {
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+</style>
 {% endblock %}
