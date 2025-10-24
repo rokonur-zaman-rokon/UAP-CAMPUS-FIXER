@@ -103,6 +103,7 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--dark); b
                         <li><a href="{% url 'dashboard' %}" class="{% if 'dashboard' in request.path %}active{% endif %}">Dashboard</a></li>
                         <li><a href="{% url 'report_issue' %}" class="{% if 'report' in request.path %}active{% endif %}">Report Issue</a></li>
                         <li><a href="{% url 'track_issue' %}" class="{% if 'track' in request.path %}active{% endif %}">Track Issue</a></li>
+                        <li><a href="{% url 'lost_found_feed' %}" class="{% if 'lost-found' in request.path %}active{% endif %}">Lost & Found</a></li>
                         <li><a href="{% url 'logout' %}" class="btn-secondary"><i class="fas fa-sign-out-alt"></i> Logout ({{ user.username }})</a></li>
                     {% else %}
                         <li><a href="{% url 'register' %}" class="btn-secondary"><i class="fas fa-user-plus"></i> Register</a></li>
@@ -146,6 +147,7 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--dark); b
                         <li><a href="{% url 'track_issue' %}">Track Issue</a></li>
                         {% if user.is_authenticated %}
                             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'lost_found_feed' %}">Lost & Found</a></li>
                         {% else %}
                             <li><a href="{% url 'login' %}">Login</a></li>
                         {% endif %}

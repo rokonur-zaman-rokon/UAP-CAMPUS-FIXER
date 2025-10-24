@@ -45,7 +45,7 @@ class Issue(models.Model):
         ('it', 'IT'),
         ('furniture', 'Furniture'),
         ('safety', 'Safety'),
-        ('lost_found', 'Lost & Found'),
+        ('lost_found', 'Lost & Found'),  # Added Lost & Found category
         ('suggestions', 'Suggestions'),
         ('others', 'Others'),
     ]
@@ -81,8 +81,8 @@ class Issue(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORIES)
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
     building = models.CharField(max_length=50, choices=BUILDING_CHOICES, default='academic')
-    location = models.CharField(max_length=200)
-    description = models.TextField()
+    location = models.CharField(max_length=200, blank=True)
+    description = models.TextField(blank=True)
     image = models.ImageField(upload_to='issues/', null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(default=timezone.now)
@@ -101,3 +101,14 @@ class IssueUpdate(models.Model):
     
     def __str__(self):
         return f"Update for {self.issue.ticket_id}"
+
+
+# ---------------------- LOST & FOUND COMMENTS ----------------------
+class LostFoundComment(models.Model):
+    post = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_text = models.TextField()  # renamed to match template
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on {self.post.ticket_id}"

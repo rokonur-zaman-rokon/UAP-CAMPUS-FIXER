@@ -3,21 +3,20 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Issue, UserProfile
+from .models import Issue, UserProfile, LostFoundComment
 import re
 
+# ---------------------- HOME ----------------------
 def index(request):
     return render(request, 'campus_fixer/index.html')
 
-
-# ---------------------- REGISTER (ONLY @uap-bd.edu) ----------------------
+# ---------------------- REGISTER ----------------------
 def register(request):
     if request.method == 'POST':
         email = request.POST.get("email")
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
 
-        # Email Format Check
         if not re.match(r"^[a-zA-Z0-9._%+-]+@uap-bd\.edu$", email):
             messages.error(request, "Only UAP email allowed (example: student@uap-bd.edu)")
             return redirect('register')
@@ -30,13 +29,9 @@ def register(request):
             messages.error(request, "This email is already registered!")
             return redirect('register')
 
-        # Username = text before @
         username = email.split("@")[0]
-
         user = User.objects.create_user(username=username, email=email, password=password1)
         user.save()
-
-        # Create profile if not exists
         UserProfile.objects.get_or_create(user=user)
 
         login(request, user)
@@ -45,8 +40,7 @@ def register(request):
 
     return render(request, 'campus_fixer/register.html')
 
-
-# ---------------------- LOGIN USING EMAIL ONLY ----------------------
+# ---------------------- LOGIN ----------------------
 def custom_login(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
@@ -77,12 +71,11 @@ def custom_login(request):
 
     return render(request, 'campus_fixer/login.html')
 
-
+# ---------------------- LOGOUT ----------------------
 def custom_logout(request):
     logout(request)
     messages.success(request, "Logged out successfully ✅")
     return redirect('index')
-
 
 # ---------------------- DASHBOARD ----------------------
 @login_required
@@ -93,7 +86,6 @@ def dashboard(request):
     resolved_issues = Issue.objects.filter(status='resolved').count()
     closed_issues = Issue.objects.filter(status='closed').count()
     urgent_issues = Issue.objects.filter(priority='urgent').count()
-
     recent_issues = Issue.objects.order_by('-created_at')[:5]
 
     context = {
@@ -106,7 +98,6 @@ def dashboard(request):
         'recent_issues': recent_issues,
     }
     return render(request, 'campus_fixer/dashboard.html', context)
-
 
 # ---------------------- REPORT ISSUE ----------------------
 @login_required
@@ -121,7 +112,6 @@ def report_issue(request):
         image = request.FILES.get('image')
 
         profile = UserProfile.objects.filter(user=request.user).first()
-
         user_type = profile.user_type if profile else 'student'
 
         Issue.objects.create(
@@ -141,13 +131,11 @@ def report_issue(request):
 
     return render(request, 'campus_fixer/report_issue.html')
 
-
 # ---------------------- TRACK ISSUES ----------------------
 @login_required
 def track_issue(request):
     issues = Issue.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'campus_fixer/track_issue.html', {'issues': issues})
-
 
 # ---------------------- UPDATE STATUS ----------------------
 @login_required
@@ -162,3 +150,43 @@ def update_issue(request, ticket_id):
         return redirect('track_issue')
 
     return render(request, 'campus_fixer/update_issue.html', {'issue': issue})
+
+# ---------------------- LOST & FOUND FEED ----------------------
+@login_required
+def lost_found_feed(request):
+    if request.method == "POST":
+        # Check if this is a new lost/found post
+        if 'category' in request.POST:
+            category = request.POST.get('category')
+            name = request.POST.get('name')
+            department = request.POST.get('department')
+            location = request.POST.get('location')
+            description = request.POST.get('description')
+            image = request.FILES.get('image')
+
+            Issue.objects.create(
+                user=request.user,
+                user_type='student',
+                department=department,
+                category='lost_found',
+                priority='medium',
+                building='academic',
+                location=location,
+                description=f"{category.title()} Item by {name}: {description}",
+                image=image
+            )
+            messages.success(request, "Your post has been added ✅")
+            return redirect('lost_found_feed')
+
+        # Check if this is a comment submission
+        elif 'comment' in request.POST:
+            post_id = request.POST.get('post_id')
+            comment_text = request.POST.get('comment')
+            post = get_object_or_404(Issue, id=post_id)
+            LostFoundComment.objects.create(post=post, user=request.user, comment=comment_text)
+            messages.success(request, "Comment added ✅")
+            return redirect('lost_found_feed')
+
+    posts = Issue.objects.filter(category='lost_found').order_by('-created_at')
+    context = {'posts': posts}
+    return render(request, 'campus_fixer/lost_found_feed.html', context)
