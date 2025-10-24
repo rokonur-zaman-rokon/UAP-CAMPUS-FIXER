@@ -154,10 +154,20 @@ def update_issue(request, ticket_id):
 # ---------------------- LOST & FOUND FEED ----------------------
 @login_required
 def lost_found_feed(request):
+    choice = request.GET.get('type')  # Get the selection: lost or found
+
     if request.method == "POST":
-        # Check if this is a new lost/found post
-        if 'category' in request.POST:
-            category = request.POST.get('category')
+        # Check if comment is submitted
+        if 'comment' in request.POST:
+            post_id = request.POST.get("post_id")
+            comment_text = request.POST.get("comment")
+            post = get_object_or_404(Issue, id=post_id)
+            LostFoundComment.objects.create(post=post, user=request.user, comment=comment_text)
+            messages.success(request, "Comment added ✅")
+            return redirect('lost_found_feed')
+
+        # Check if new lost item is submitted
+        if 'description' in request.POST:
             name = request.POST.get('name')
             department = request.POST.get('department')
             location = request.POST.get('location')
@@ -166,27 +176,21 @@ def lost_found_feed(request):
 
             Issue.objects.create(
                 user=request.user,
-                user_type='student',
-                department=department,
                 category='lost_found',
-                priority='medium',
-                building='academic',
+                status='lost',
+                department=department,
                 location=location,
-                description=f"{category.title()} Item by {name}: {description}",
+                description=description,
                 image=image
             )
-            messages.success(request, "Your post has been added ✅")
+            messages.success(request, "Lost item reported successfully ✅")
             return redirect('lost_found_feed')
 
-        # Check if this is a comment submission
-        elif 'comment' in request.POST:
-            post_id = request.POST.get('post_id')
-            comment_text = request.POST.get('comment')
-            post = get_object_or_404(Issue, id=post_id)
-            LostFoundComment.objects.create(post=post, user=request.user, comment=comment_text)
-            messages.success(request, "Comment added ✅")
-            return redirect('lost_found_feed')
+    # Show found items if choice is 'found'
+    found_posts = Issue.objects.filter(category='lost_found', status='found').order_by('-created_at') if choice == 'found' else None
 
-    posts = Issue.objects.filter(category='lost_found').order_by('-created_at')
-    context = {'posts': posts}
+    context = {
+        'choice': choice,
+        'found_posts': found_posts
+    }
     return render(request, 'campus_fixer/lost_found_feed.html', context)
