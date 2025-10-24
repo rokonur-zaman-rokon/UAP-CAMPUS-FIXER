@@ -1,65 +1,90 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import Issue, UserProfile
+import re
 
 def index(request):
     return render(request, 'campus_fixer/index.html')
 
 
+# ---------------------- REGISTER (ONLY @uap-bd.edu) ----------------------
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Account created for {username}! Welcome to Campus Fixer!')
-                return redirect('dashboard')
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
-    else:
-        form = UserCreationForm()
-    
-    return render(request, 'campus_fixer/register.html', {'form': form})
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+
+        # Email Format Check
+        if not re.match(r"^[a-zA-Z0-9._%+-]+@uap-bd\.edu$", email):
+            messages.error(request, "Only UAP email allowed (example: student@uap-bd.edu)")
+            return redirect('register')
+
+        if password1 != password2:
+            messages.error(request, "Passwords do not match!")
+            return redirect('register')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "This email is already registered!")
+            return redirect('register')
+
+        # Username = text before @
+        username = email.split("@")[0]
+
+        user = User.objects.create_user(username=username, email=email, password=password1)
+        user.save()
+
+        # Create profile if not exists
+        UserProfile.objects.get_or_create(user=user)
+
+        login(request, user)
+        messages.success(request, "Account created successfully! Welcome 🎉")
+        return redirect('dashboard')
+
+    return render(request, 'campus_fixer/register.html')
 
 
+# ---------------------- LOGIN USING EMAIL ONLY ----------------------
 def custom_login(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
-        
+
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Welcome back, {username}!')
-                return redirect('dashboard')
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        if not re.match(r"^[a-zA-Z0-9._%+-]+@uap-bd\.edu$", email):
+            messages.error(request, "Enter valid UAP email (example: student@uap-bd.edu)")
+            return redirect('login')
+
+        try:
+            user_obj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "No account found with this email.")
+            return redirect('login')
+
+        user = authenticate(request, username=user_obj.username, password=password)
+
+        if user:
+            login(request, user)
+            messages.success(request, f"Welcome back, {user.username}! ✅")
+            return redirect('dashboard')
         else:
-            messages.error(request, 'Invalid username or password.')
-    else:
-        form = AuthenticationForm()
-    
-    return render(request, 'campus_fixer/login.html', {'form': form})
+            messages.error(request, "Incorrect password ❌")
+            return redirect('login')
+
+    return render(request, 'campus_fixer/login.html')
 
 
 def custom_logout(request):
     logout(request)
-    messages.success(request, 'You have been successfully logged out.')
+    messages.success(request, "Logged out successfully ✅")
     return redirect('index')
 
 
+# ---------------------- DASHBOARD ----------------------
 @login_required
 def dashboard(request):
     total_issues = Issue.objects.count()
@@ -67,7 +92,7 @@ def dashboard(request):
     in_progress_issues = Issue.objects.filter(status='in_progress').count()
     resolved_issues = Issue.objects.filter(status='resolved').count()
     closed_issues = Issue.objects.filter(status='closed').count()
-    urgent_issues = Issue.objects.filter(priority='urgent').count() if hasattr(Issue, 'priority') else 0
+    urgent_issues = Issue.objects.filter(priority='urgent').count()
 
     recent_issues = Issue.objects.order_by('-created_at')[:5]
 
@@ -83,40 +108,48 @@ def dashboard(request):
     return render(request, 'campus_fixer/dashboard.html', context)
 
 
+# ---------------------- REPORT ISSUE ----------------------
 @login_required
 def report_issue(request):
     if request.method == 'POST':
         category = request.POST.get('category')
         location = request.POST.get('location')
         description = request.POST.get('description')
+        priority = request.POST.get('priority')
+        building = request.POST.get('building')
+        department = request.POST.get('department')
         image = request.FILES.get('image')
 
         profile = UserProfile.objects.filter(user=request.user).first()
+
         user_type = profile.user_type if profile else 'student'
-        department = profile.department if profile else 'OTHERS'
 
         Issue.objects.create(
             user=request.user,
             user_type=user_type,
             department=department,
             category=category,
+            priority=priority,
+            building=building,
             location=location,
             description=description,
             image=image
         )
 
-        messages.success(request, 'Issue reported successfully! Your ticket has been created.')
+        messages.success(request, "Issue reported successfully ✅")
         return redirect('dashboard')
-    
+
     return render(request, 'campus_fixer/report_issue.html')
 
 
+# ---------------------- TRACK ISSUES ----------------------
 @login_required
 def track_issue(request):
     issues = Issue.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'campus_fixer/track_issue.html', {'issues': issues})
 
 
+# ---------------------- UPDATE STATUS ----------------------
 @login_required
 def update_issue(request, ticket_id):
     issue = get_object_or_404(Issue, ticket_id=ticket_id, user=request.user)
@@ -125,7 +158,7 @@ def update_issue(request, ticket_id):
         new_status = request.POST.get("status")
         issue.status = new_status
         issue.save()
-        messages.success(request, f"Issue {issue.ticket_id} status updated successfully!")
+        messages.success(request, f"Status updated ✅")
         return redirect('track_issue')
 
     return render(request, 'campus_fixer/update_issue.html', {'issue': issue})
