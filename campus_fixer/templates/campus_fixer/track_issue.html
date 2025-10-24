@@ -5,17 +5,16 @@
 
 {% block content %}
 <div style="
-    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
                 url('{% static 'campus_fixer/images/uap5.jpg' %}') center/cover no-repeat;
     min-height: 100vh;
     padding: 4rem 2rem;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
 ">
-    <div style="max-width: 1000px; width: 100%; color: white; display: flex; flex-direction: column; gap: 2rem;">
+    <div style="max-width: 1000px; width: 100%; display: flex; flex-direction: column; gap: 2rem;">
 
-        <div style="text-align: center;">
+        <div style="text-align: center; color: white;">
             <h2 style="margin-bottom: 0.5rem;">Track Your Issues</h2>
             <p style="opacity: 0.9;">Monitor the status of your maintenance requests</p>
         </div>
@@ -23,17 +22,20 @@
         {% if issues %}
         <div style="display: grid; gap: 1.5rem;">
             {% for issue in issues %}
-            <div class="card" style="border-left: 5px solid 
+            <div class="card" style="border-left: 5px solid
                 {% if issue.status == 'resolved' %}#10B981
                 {% elif issue.status == 'in_progress' %}#F59E0B
                 {% elif issue.status == 'closed' %}#6B7280
                 {% else %}#EF4444{% endif %};
-                background: rgba(0,0,0,0.45);
-                padding: 1rem; border-radius: 10px;">
-                
+                background: rgba(255,255,255,0.15);
+                color: white;
+                padding: 1rem; border-radius: 12px;">
+
                 <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
                     <div style="flex: 1;">
-                        <h4 style="margin: 0;">{{ issue.category|title }} - {{ issue.location }}</h4>
+                        <h4 style="margin: 0 0 0.3rem 0; font-weight:600;">
+                            {{ issue.ticket_id }} - {{ issue.category|title }} ({{ issue.location }})
+                        </h4>
 
                         <span style="background:
                             {% if issue.status == 'resolved' %}#10B981
@@ -50,7 +52,7 @@
                             <i class="fas fa-building"></i> {{ issue.department }}
                         </p>
 
-                        <p>{{ issue.description }}</p>
+                        <p style="margin-top: 0.25rem;">{{ issue.description }}</p>
 
                         {% if issue.image %}
                         <div style="margin-top:10px;">
@@ -58,14 +60,12 @@
                         </div>
                         {% endif %}
                     </div>
-
-                   
                 </div>
             </div>
             {% endfor %}
         </div>
         {% else %}
-            <p style="text-align:center; font-size:1.2rem;">No issues reported yet.</p>
+            <p style="text-align:center; font-size:1.2rem; color:white;">No issues reported yet.</p>
         {% endif %}
 
     </div>

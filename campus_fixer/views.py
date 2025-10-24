@@ -9,6 +9,7 @@ from .models import Issue, UserProfile
 def index(request):
     return render(request, 'campus_fixer/index.html')
 
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -29,6 +30,7 @@ def register(request):
         form = UserCreationForm()
     
     return render(request, 'campus_fixer/register.html', {'form': form})
+
 
 def custom_login(request):
     if request.user.is_authenticated:
@@ -51,22 +53,40 @@ def custom_login(request):
     
     return render(request, 'campus_fixer/login.html', {'form': form})
 
+
 def custom_logout(request):
     logout(request)
     messages.success(request, 'You have been successfully logged out.')
     return redirect('index')
 
+
 @login_required
 def dashboard(request):
-    return render(request, 'campus_fixer/dashboard.html')
+    total_issues = Issue.objects.count()
+    pending_issues = Issue.objects.filter(status='pending').count()
+    in_progress_issues = Issue.objects.filter(status='in_progress').count()
+    resolved_issues = Issue.objects.filter(status='resolved').count()
+    closed_issues = Issue.objects.filter(status='closed').count()
+    urgent_issues = Issue.objects.filter(priority='urgent').count() if hasattr(Issue, 'priority') else 0
+
+    recent_issues = Issue.objects.order_by('-created_at')[:5]
+
+    context = {
+        'total_issues': total_issues,
+        'pending_issues': pending_issues,
+        'in_progress_issues': in_progress_issues,
+        'resolved_issues': resolved_issues,
+        'closed_issues': closed_issues,
+        'urgent_issues': urgent_issues,
+        'recent_issues': recent_issues,
+    }
+    return render(request, 'campus_fixer/dashboard.html', context)
+
 
 @login_required
 def report_issue(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
         category = request.POST.get('category')
-        priority = request.POST.get('priority')
-        building = request.POST.get('building')
         location = request.POST.get('location')
         description = request.POST.get('description')
         image = request.FILES.get('image')
@@ -90,12 +110,13 @@ def report_issue(request):
     
     return render(request, 'campus_fixer/report_issue.html')
 
+
 @login_required
 def track_issue(request):
     issues = Issue.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'campus_fixer/track_issue.html', {'issues': issues})
 
-# ✅ FIXED update_issue using ticket_id
+
 @login_required
 def update_issue(request, ticket_id):
     issue = get_object_or_404(Issue, ticket_id=ticket_id, user=request.user)
