@@ -9,4 +9,5 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('report_issue/', views.report_issue, name='report_issue'),
     path('track_issue/', views.track_issue, name='track_issue'),
+    path('ajax/resolved-count/', views.issues_resolved_count, name='issues_resolved_count'),
 ]

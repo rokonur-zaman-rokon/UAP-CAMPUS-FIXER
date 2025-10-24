@@ -3,11 +3,15 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.models import User
 from .models import Issue, UserProfile
+from django.http import JsonResponse
 
 def index(request):
-    return render(request, 'campus_fixer/index.html')
+    issues_resolved = Issue.objects.filter(status='resolved').count()
+    context = {
+        'issues_resolved': issues_resolved,
+    }
+    return render(request, 'campus_fixer/index.html', context)
 
 def register(request):
     if request.method == 'POST':
@@ -71,7 +75,6 @@ def report_issue(request):
         description = request.POST.get('description')
         image = request.FILES.get('image')
 
-        # Fetch user's profile info
         profile = UserProfile.objects.filter(user=request.user).first()
         user_type = profile.user_type if profile else 'student'
         department = profile.department if profile else 'OTHERS'
@@ -95,3 +98,7 @@ def report_issue(request):
 def track_issue(request):
     issues = Issue.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'campus_fixer/track_issue.html', {'issues': issues})
+
+def issues_resolved_count(request):
+    resolved_count = Issue.objects.filter(status='resolved').count()
+    return JsonResponse({'resolved_count': resolved_count})
