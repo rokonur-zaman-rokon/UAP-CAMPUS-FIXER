@@ -101,14 +101,3 @@ class IssueUpdate(models.Model):
     
     def __str__(self):
         return f"Update for {self.issue.ticket_id}"
-
-
-# ---------------------- LOST & FOUND COMMENTS ----------------------
-class LostFoundComment(models.Model):
-    post = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment_text = models.TextField()  # renamed to match template
-    created_at = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return f"Comment by {self.user.username} on {self.post.ticket_id}"

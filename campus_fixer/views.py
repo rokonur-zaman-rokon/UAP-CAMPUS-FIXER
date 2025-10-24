@@ -1,14 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
+<<<<<<< HEAD
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Issue, UserProfile, LostFoundComment
 import re
+=======
+from .models import Issue, UserProfile
+from django.http import JsonResponse
+>>>>>>> 9e3e32f2584e6898882c9ffcb9b9324f730ba1dc
 
 # ---------------------- HOME ----------------------
 def index(request):
-    return render(request, 'campus_fixer/index.html')
+    issues_resolved = Issue.objects.filter(status='resolved').count()
+    context = {
+        'issues_resolved': issues_resolved,
+    }
+    return render(request, 'campus_fixer/index.html', context)
 
 # ---------------------- REGISTER ----------------------
 def register(request):
@@ -137,6 +146,7 @@ def track_issue(request):
     issues = Issue.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'campus_fixer/track_issue.html', {'issues': issues})
 
+<<<<<<< HEAD
 # ---------------------- UPDATE STATUS ----------------------
 @login_required
 def update_issue(request, ticket_id):
@@ -194,3 +204,8 @@ def lost_found_feed(request):
         'found_posts': found_posts
     }
     return render(request, 'campus_fixer/lost_found_feed.html', context)
+=======
+def issues_resolved_count(request):
+    resolved_count = Issue.objects.filter(status='resolved').count()
+    return JsonResponse({'resolved_count': resolved_count})
+>>>>>>> 9e3e32f2584e6898882c9ffcb9b9324f730ba1dc
