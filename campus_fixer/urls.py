@@ -9,10 +9,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('report_issue/', views.report_issue, name='report_issue'),
     path('track_issue/', views.track_issue, name='track_issue'),
-<<<<<<< HEAD
     path('update_issue/<str:ticket_id>/', views.update_issue, name='update_issue'),
     path('lost-found-feed/', views.lost_found_feed, name='lost_found_feed'),
-=======
     path('ajax/resolved-count/', views.issues_resolved_count, name='issues_resolved_count'),
->>>>>>> 9e3e32f2584e6898882c9ffcb9b9324f730ba1dc
 ]
