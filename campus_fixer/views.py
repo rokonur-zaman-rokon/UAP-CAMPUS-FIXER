@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -71,7 +71,6 @@ def report_issue(request):
         description = request.POST.get('description')
         image = request.FILES.get('image')
 
-        # Fetch user's profile info
         profile = UserProfile.objects.filter(user=request.user).first()
         user_type = profile.user_type if profile else 'student'
         department = profile.department if profile else 'OTHERS'
@@ -95,3 +94,17 @@ def report_issue(request):
 def track_issue(request):
     issues = Issue.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'campus_fixer/track_issue.html', {'issues': issues})
+
+# ✅ FIXED update_issue using ticket_id
+@login_required
+def update_issue(request, ticket_id):
+    issue = get_object_or_404(Issue, ticket_id=ticket_id, user=request.user)
+
+    if request.method == "POST":
+        new_status = request.POST.get("status")
+        issue.status = new_status
+        issue.save()
+        messages.success(request, f"Issue {issue.ticket_id} status updated successfully!")
+        return redirect('track_issue')
+
+    return render(request, 'campus_fixer/update_issue.html', {'issue': issue})
