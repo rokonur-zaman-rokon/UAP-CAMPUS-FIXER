@@ -14,7 +14,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     min-height: calc(100vh - 100px);
     padding: 40px 20px;
     background: rgba(0,0,0,0.6);
@@ -25,7 +24,7 @@ body {
     box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 
-/* Selection Buttons */
+/* Buttons */
 .selection-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -193,7 +192,7 @@ form input[type="submit"]:hover, form button:hover {
         <a href="{% url 'lost_found_feed' %}" class="back-btn">← Back to Home</a>
 
     {% elif choice == 'found' %}
-        <!-- Found Items -->
+        <!-- Found Items (Commenting allowed without selecting lost/found) -->
         <h2>Found Items</h2>
         <div class="found-grid">
             {% for post in found_posts %}
@@ -225,7 +224,7 @@ form input[type="submit"]:hover, form button:hover {
                 </div>
             </div>
             {% empty %}
-                <p>No found items yet.</p>
+                <p>No posts yet.</p>
             {% endfor %}
         </div>
         <a href="{% url 'lost_found_feed' %}" class="back-btn">← Back to Home</a>
