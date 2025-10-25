@@ -35,10 +35,10 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
             <div class="card text-center"
                 style="border-left: 4px solid var(--primary); background: rgba(255,255,255,0.7); padding: 1.5rem; border-radius: 10px;">
-                <div style="font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">
+                <div style="font-size: 2rem; font-weight: 700; color: blue; margin-bottom: 0.5rem;">
                     {{ total_issues }}
                 </div>
-                <div style="color: var(--gray); font-weight: 500;">Total Issues</div>
+                <div style="color: blue; font-weight: 500;">Total Issues</div>
             </div>
 
             <div class="card text-center"
@@ -76,9 +76,10 @@
             <a href="{% url 'report_issue' %}" class="btn btn-primary" style="margin: 5px; padding: 1rem 1.5rem;">
                 <i class="fas fa-plus-circle" style="margin-right: 5px;"></i> Report Issue
             </a>
-            <a href="{% url 'track_issue' %}" class="btn btn-secondary" style="margin: 5px; padding: 1rem 1.5rem;">
+            <a href="{% url 'track_issue' %}" class="btn btn-secondary" style="margin: 5px; padding: 1rem 1.5rem; background-color: #8987ebff; border-color: #8987ebff; color: #ffffff;">
                 <i class="fas fa-search" style="margin-right: 5px;"></i> Track Issues
-            </a>
+                </a>
+
         </div>
 
         <!-- ✅ Recent Issues -->
@@ -114,7 +115,7 @@
                             <td style="padding: 0.75rem;">
                                 <span style="
                                     background:
-                                        {% if issue.status == 'pending' %}var(--warning)
+                                        {% if issue.status == 'pending' %}#FD7E14
                                         {% elif issue.status == 'in_progress' %}var(--accent)
                                         {% elif issue.status == 'resolved' %}var(--success)
                                         {% elif issue.status == 'closed' %}var(--error)
