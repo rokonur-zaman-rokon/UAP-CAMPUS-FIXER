@@ -166,28 +166,20 @@ def update_issue(request, ticket_id):
 # ---------------------- LOST & FOUND FEED ----------------------
 @login_required
 def lost_found_feed(request):
-    """
-    Handles Lost & Found system:
-    - Default: shows two buttons (Report Lost/Found) and (View Found Items)
-    - ?type=report : shows form with 'lost'/'found' selection
-    - ?type=found  : shows all found posts
-    """
-
     choice = request.GET.get('type')  # 'report' or 'found'
 
     if request.method == "POST":
-        # --- Handle Comment Submission ---
-        if 'comment' in request.POST:
+        # --- Comment Submission ---
+        if 'comment_text' in request.POST:
             post_id = request.POST.get("post_id")
-            comment_text = request.POST.get("comment")
+            comment_text = request.POST.get("comment_text")
             post = get_object_or_404(Issue, id=post_id)
-            LostFoundComment.objects.create(post=post, user=request.user, comment=comment_text)
+            LostFoundComment.objects.create(post=post, user=request.user, comment_text=comment_text)
             messages.success(request, "Comment added ✅")
             return redirect(f"{request.path}?type=found")
 
-        # --- Handle Lost/Found Report ---
+        # --- Lost/Found Report Submission ---
         status = request.POST.get('status')
-        name = request.POST.get('name')
         department = request.POST.get('department')
         location = request.POST.get('location')
         description = request.POST.get('description')
