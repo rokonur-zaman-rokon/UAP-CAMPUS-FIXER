@@ -5,13 +5,21 @@
 
 {% block content %}
 <div style="
-    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)),
+    background: linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15)),
                 url('{% static "campus_fixer/images/uap2.jpg" %}') center/cover no-repeat;
     min-height: 100vh;
     padding: 2rem;
 ">
 
-    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+    <div class="container" style="
+        max-width: 1200px; 
+        margin: 0 auto; 
+        background: rgba(255,255,255,0.3); 
+        border-radius: 16px; 
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        padding: 2rem;
+        backdrop-filter: blur(6px);
+    ">
 
         <!-- ✅ Welcome Section -->
         <div class="card"
@@ -26,7 +34,7 @@
         <!-- ✅ Stats Overview -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
             <div class="card text-center"
-                style="border-left: 4px solid var(--primary); background: rgba(255,255,255,0.65); padding: 1.5rem; border-radius: 10px;">
+                style="border-left: 4px solid var(--primary); background: rgba(255,255,255,0.7); padding: 1.5rem; border-radius: 10px;">
                 <div style="font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">
                     {{ total_issues }}
                 </div>
@@ -34,7 +42,7 @@
             </div>
 
             <div class="card text-center"
-                style="border-left: 4px solid var(--warning); background: rgba(255,255,255,0.65); padding: 1.5rem; border-radius: 10px;">
+                style="border-left: 4px solid var(--warning); background: rgba(255,255,255,0.7); padding: 1.5rem; border-radius: 10px;">
                 <div style="font-size: 2rem; font-weight: 700; color: var(--warning); margin-bottom: 0.5rem;">
                     {{ pending_issues }}
                 </div>
@@ -42,7 +50,7 @@
             </div>
 
             <div class="card text-center"
-                style="border-left: 4px solid var(--success); background: rgba(255,255,255,0.65); padding: 1.5rem; border-radius: 10px;">
+                style="border-left: 4px solid var(--success); background: rgba(255,255,255,0.7); padding: 1.5rem; border-radius: 10px;">
                 <div style="font-size: 2rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem;">
                     {{ resolved_issues }}
                 </div>
@@ -50,7 +58,7 @@
             </div>
 
             <div class="card text-center"
-                style="border-left: 4px solid var(--error); background: rgba(255,255,255,0.65); padding: 1.5rem; border-radius: 10px;">
+                style="border-left: 4px solid var(--error); background: rgba(255,255,255,0.7); padding: 1.5rem; border-radius: 10px;">
                 <div style="font-size: 2rem; font-weight: 700; color: var(--error); margin-bottom: 0.5rem;">
                     {{ urgent_issues }}
                 </div>
@@ -60,7 +68,7 @@
 
         <!-- ✅ Quick Actions -->
         <div class="card"
-            style="background: rgba(255, 255, 255, 0.55); padding: 1.5rem; text-align: center; margin-bottom: 2rem; border-radius: 10px;">
+            style="background: rgba(255, 255, 255, 0.65); padding: 1.5rem; text-align: center; margin-bottom: 2rem; border-radius: 10px;">
             <h2 style="margin-bottom: 1rem; color: var(--dark);">
                 <i class="fas fa-bolt" style="color: var(--accent); margin-right: 10px;"></i>
                 Quick Actions
