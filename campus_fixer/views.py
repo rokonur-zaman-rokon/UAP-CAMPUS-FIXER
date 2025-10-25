@@ -118,6 +118,9 @@ def report_issue(request):
         department = request.POST.get('department')
         image = request.FILES.get('image')
 
+
+        is_emergency = True if request.POST.get('is_emergency') == 'on' else False
+
         profile = UserProfile.objects.filter(user=request.user).first()
         user_type = profile.user_type if profile else 'student'
 
@@ -130,7 +133,9 @@ def report_issue(request):
             building=building,
             location=location,
             description=description,
-            image=image
+            image=image,
+            is_emergency=is_emergency
+            
         )
 
         messages.success(request, "Issue reported successfully ✅")

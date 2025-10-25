@@ -24,7 +24,7 @@
         <!-- ✅ Welcome Section -->
         <div class="card"
             style="background: rgba(0,0,0,0.55); color: #fff; padding: 2rem; margin-bottom: 2rem; text-align: center; border-radius: 12px;">
-            <h1>Welcome back, {{ user.username }}! 👋</h1>
+            <h1>Welcome back, {{ user.username }}! </h1>
             <p style="opacity: 0.9; font-size: 1.1rem;">Here's what's happening with your maintenance requests</p>
             <a href="{% url 'report_issue' %}" class="btn btn-primary mt-3" style="padding: 12px 25px;">
                 <i class="fas fa-plus-circle"></i> Report New Issue
@@ -107,34 +107,47 @@
                             <th style="padding: 0.75rem; text-align: left;">Date</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {% for issue in recent_issues %}
-                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-                            <td style="padding: 0.75rem;">{{ issue.ticket_id }}</td>
-                            <td style="padding: 0.75rem;">{{ issue.category }}</td>
-                            <td style="padding: 0.75rem;">
+                   <tbody>
+                    {% for issue in recent_issues %}
+                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.1);">
+                        <td style="padding: 0.75rem;">{{ issue.ticket_id }}</td>
+                        <td style="padding: 0.75rem;">{{ issue.category }}</td>
+                        <td style="padding: 0.75rem; display: flex; gap: 0.5rem; align-items: center;">
+                            {% if issue.is_emergency %}
                                 <span style="
-                                    background:
-                                        {% if issue.status == 'pending' %}#FD7E14
-                                        {% elif issue.status == 'in_progress' %}var(--accent)
-                                        {% elif issue.status == 'resolved' %}var(--success)
-                                        {% elif issue.status == 'closed' %}var(--error)
-                                        {% else %}#e5e7eb{% endif %};
+                                    background: #FF4C4C; /* red for emergency */
                                     color: white;
                                     padding: 0.25rem 0.75rem;
                                     border-radius: 20px;
-                                    font-size: 0.875rem;">
-                                    {{ issue.status|title }}
+                                    font-size: 0.875rem;
+                                    font-weight: bold;
+                                    box-shadow: 0 0 8px #FF4C4C;">
+                                    🚨 Emergency
                                 </span>
-                            </td>
-                            <td style="padding: 0.75rem;">{{ issue.created_at|date:"Y-m-d H:i" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" style="text-align:center; padding: 1rem;">No issues found.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
+                            {% endif %}
+                            <span style="
+                                background:
+                                    {% if issue.status == 'pending' %}#FD7E14
+                                    {% elif issue.status == 'in_progress' %}var(--accent)
+                                    {% elif issue.status == 'resolved' %}var(--success)
+                                    {% elif issue.status == 'closed' %}var(--error)
+                                    {% else %}#e5e7eb{% endif %};
+                                color: white;
+                                padding: 0.25rem 0.75rem;
+                                border-radius: 20px;
+                                font-size: 0.875rem;">
+                                {{ issue.status|title }}
+                            </span>
+                        </td>
+                        <td style="padding: 0.75rem;">{{ issue.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align:center; padding: 1rem;">No issues found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
                 </table>
             </div>
         </div>

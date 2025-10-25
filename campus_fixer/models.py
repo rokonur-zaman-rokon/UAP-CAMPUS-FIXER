@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
 
+
+
 # ---------------------- USER PROFILE ----------------------
 class UserProfile(models.Model):
     USER_TYPES = [
@@ -20,9 +22,13 @@ class UserProfile(models.Model):
         return f"{self.user.username} - {self.user_type}"
 
 
+
+
 # ---------------------- ISSUE ----------------------
 def generate_ticket_id():
     return f"UAP{str(uuid.uuid4())[:8].upper()}"
+
+
 
 
 class Issue(models.Model):
@@ -64,6 +70,7 @@ class Issue(models.Model):
         ('urgent', 'Urgent'),
     ]
 
+
     BUILDING_CHOICES = [
         ('academic', 'Academic Building'),
         ('library', 'Library'),
@@ -73,6 +80,7 @@ class Issue(models.Model):
         ('admin', 'Administrative Building'),
     ]
     
+
     ticket_id = models.CharField(max_length=20, unique=True, default=generate_ticket_id)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     anonymous = models.BooleanField(default=False)
@@ -87,6 +95,8 @@ class Issue(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+    is_emergency = models.BooleanField(default=False)
+
     
     def _str_(self):
         return f"{self.ticket_id} - {self.category}"
@@ -103,12 +113,16 @@ class IssueUpdate(models.Model):
         return f"Update for {self.issue.ticket_id}"
 
 
+
+
 # ---------------------- LOST & FOUND COMMENTS ----------------------
 class LostFoundComment(models.Model):
     post = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment_text = models.TextField()  # renamed to match template
     created_at = models.DateTimeField(default=timezone.now)
+
+
 
     def _str_(self):
         return f"Comment by {self.user.username} on {self.post.ticket_id}"
