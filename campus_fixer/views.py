@@ -3,18 +3,17 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .models import Issue, UserProfile, LostFoundComment
 import re
-from .models import Issue, UserProfile
-from django.http import JsonResponse
+
 
 # ---------------------- HOME ----------------------
 def index(request):
     issues_resolved = Issue.objects.filter(status='resolved').count()
-    context = {
-        'issues_resolved': issues_resolved,
-    }
+    context = {'issues_resolved': issues_resolved}
     return render(request, 'campus_fixer/index.html', context)
+
 
 # ---------------------- REGISTER ----------------------
 def register(request):
@@ -45,6 +44,7 @@ def register(request):
         return redirect('dashboard')
 
     return render(request, 'campus_fixer/register.html')
+
 
 # ---------------------- LOGIN ----------------------
 def custom_login(request):
@@ -77,11 +77,13 @@ def custom_login(request):
 
     return render(request, 'campus_fixer/login.html')
 
+
 # ---------------------- LOGOUT ----------------------
 def custom_logout(request):
     logout(request)
     messages.success(request, "Logged out successfully ✅")
     return redirect('index')
+
 
 # ---------------------- DASHBOARD ----------------------
 @login_required
@@ -104,6 +106,7 @@ def dashboard(request):
         'recent_issues': recent_issues,
     }
     return render(request, 'campus_fixer/dashboard.html', context)
+
 
 # ---------------------- REPORT ISSUE ----------------------
 @login_required
@@ -137,11 +140,13 @@ def report_issue(request):
 
     return render(request, 'campus_fixer/report_issue.html')
 
+
 # ---------------------- TRACK ISSUES ----------------------
 @login_required
 def track_issue(request):
     issues = Issue.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'campus_fixer/track_issue.html', {'issues': issues})
+
 
 # ---------------------- UPDATE STATUS ----------------------
 @login_required
@@ -152,54 +157,71 @@ def update_issue(request, ticket_id):
         new_status = request.POST.get("status")
         issue.status = new_status
         issue.save()
-        messages.success(request, f"Status updated ✅")
+        messages.success(request, "Status updated ✅")
         return redirect('track_issue')
 
     return render(request, 'campus_fixer/update_issue.html', {'issue': issue})
 
+
 # ---------------------- LOST & FOUND FEED ----------------------
 @login_required
 def lost_found_feed(request):
-    choice = request.GET.get('type')  # Get the selection: lost or found
+    """
+    Handles Lost & Found system:
+    - Default: shows two buttons (Report Lost/Found) and (View Found Items)
+    - ?type=report : shows form with 'lost'/'found' selection
+    - ?type=found  : shows all found posts
+    """
+
+    choice = request.GET.get('type')  # 'report' or 'found'
 
     if request.method == "POST":
-        # Check if comment is submitted
+        # --- Handle Comment Submission ---
         if 'comment' in request.POST:
             post_id = request.POST.get("post_id")
             comment_text = request.POST.get("comment")
             post = get_object_or_404(Issue, id=post_id)
             LostFoundComment.objects.create(post=post, user=request.user, comment=comment_text)
             messages.success(request, "Comment added ✅")
-            return redirect('lost_found_feed')
+            return redirect(f"{request.path}?type=found")
 
-        # Check if new lost item is submitted
-        if 'description' in request.POST:
-            name = request.POST.get('name')
-            department = request.POST.get('department')
-            location = request.POST.get('location')
-            description = request.POST.get('description')
-            image = request.FILES.get('image')
+        # --- Handle Lost/Found Report ---
+        status = request.POST.get('status')
+        name = request.POST.get('name')
+        department = request.POST.get('department')
+        location = request.POST.get('location')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
 
-            Issue.objects.create(
-                user=request.user,
-                category='lost_found',
-                status='lost',
-                department=department,
-                location=location,
-                description=description,
-                image=image
-            )
-            messages.success(request, "Lost item reported successfully ✅")
-            return redirect('lost_found_feed')
+        if status not in ['lost', 'found']:
+            messages.error(request, "Please select Lost or Found ❗")
+            return redirect(f"{request.path}?type=report")
 
-    # Show found items if choice is 'found'
-    found_posts = Issue.objects.filter(category='lost_found', status='found').order_by('-created_at') if choice == 'found' else None
+        Issue.objects.create(
+            user=request.user,
+            category='lost_found',
+            status=status,
+            department=department,
+            location=location,
+            description=description,
+            image=image
+        )
+        messages.success(request, f"{status.capitalize()} item reported successfully ✅")
+        return redirect('lost_found_feed')
+
+    # --- Display Found Items ---
+    found_posts = None
+    if choice == 'found':
+        found_posts = Issue.objects.filter(category='lost_found', status='found').order_by('-created_at')
 
     context = {
         'choice': choice,
         'found_posts': found_posts
     }
     return render(request, 'campus_fixer/lost_found_feed.html', context)
+
+
+# ---------------------- REAL-TIME RESOLVED COUNT ----------------------
 def issues_resolved_count(request):
     resolved_count = Issue.objects.filter(status='resolved').count()
     return JsonResponse({'resolved_count': resolved_count})

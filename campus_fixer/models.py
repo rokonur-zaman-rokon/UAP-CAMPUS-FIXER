@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     department = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=15, blank=True)
     
-    def _str_(self):
+    def __str__(self):
         return f"{self.user.username} - {self.user_type}"
 
 
@@ -55,6 +55,8 @@ class Issue(models.Model):
         ('in_progress', 'In Progress'),
         ('resolved', 'Resolved'),
         ('closed', 'Closed'),
+        ('lost', 'Lost'),
+        ('found', 'Found'),
     ]
 
     PRIORITY_CHOICES = [
@@ -88,7 +90,7 @@ class Issue(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     
-    def _str_(self):
+    def __str__(self):
         return f"{self.ticket_id} - {self.category}"
 
 
@@ -99,7 +101,7 @@ class IssueUpdate(models.Model):
     updated_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     
-    def _str_(self):
+    def __str__(self):
         return f"Update for {self.issue.ticket_id}"
 
 
@@ -107,8 +109,8 @@ class IssueUpdate(models.Model):
 class LostFoundComment(models.Model):
     post = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment_text = models.TextField()  # renamed to match template
+    comment_text = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
 
-    def _str_(self):
+    def __str__(self):
         return f"Comment by {self.user.username} on {self.post.ticket_id}"
