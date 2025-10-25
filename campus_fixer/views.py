@@ -7,13 +7,11 @@ from django.http import JsonResponse
 from .models import Issue, UserProfile, LostFoundComment
 import re
 
-
 # ---------------------- HOME ----------------------
 def index(request):
     issues_resolved = Issue.objects.filter(status='resolved').count()
     context = {'issues_resolved': issues_resolved}
     return render(request, 'campus_fixer/index.html', context)
-
 
 # ---------------------- REGISTER ----------------------
 def register(request):
@@ -36,7 +34,6 @@ def register(request):
 
         username = email.split("@")[0]
         user = User.objects.create_user(username=username, email=email, password=password1)
-        user.save()
         UserProfile.objects.get_or_create(user=user)
 
         login(request, user)
@@ -45,11 +42,10 @@ def register(request):
 
     return render(request, 'campus_fixer/register.html')
 
-
 # ---------------------- LOGIN ----------------------
 def custom_login(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('dashboard')  # Redirect logged-in users to dashboard
 
     if request.method == 'POST':
         email = request.POST.get("email")
@@ -70,20 +66,18 @@ def custom_login(request):
         if user:
             login(request, user)
             messages.success(request, f"Welcome back, {user.username}! ✅")
-            return redirect('dashboard')
+            return redirect('dashboard')  # Redirect to dashboard after login
         else:
             messages.error(request, "Incorrect password ❌")
             return redirect('login')
 
     return render(request, 'campus_fixer/login.html')
 
-
 # ---------------------- LOGOUT ----------------------
 def custom_logout(request):
     logout(request)
     messages.success(request, "Logged out successfully ✅")
     return redirect('index')
-
 
 # ---------------------- DASHBOARD ----------------------
 @login_required
@@ -106,7 +100,6 @@ def dashboard(request):
         'recent_issues': recent_issues,
     }
     return render(request, 'campus_fixer/dashboard.html', context)
-
 
 # ---------------------- REPORT ISSUE ----------------------
 @login_required
@@ -140,28 +133,23 @@ def report_issue(request):
 
     return render(request, 'campus_fixer/report_issue.html')
 
-
 # ---------------------- TRACK ISSUES ----------------------
 @login_required
 def track_issue(request):
     issues = Issue.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'campus_fixer/track_issue.html', {'issues': issues})
 
-
 # ---------------------- UPDATE STATUS ----------------------
 @login_required
 def update_issue(request, ticket_id):
     issue = get_object_or_404(Issue, ticket_id=ticket_id, user=request.user)
-
     if request.method == "POST":
         new_status = request.POST.get("status")
         issue.status = new_status
         issue.save()
         messages.success(request, "Status updated ✅")
         return redirect('track_issue')
-
     return render(request, 'campus_fixer/update_issue.html', {'issue': issue})
-
 
 # ---------------------- LOST & FOUND FEED ----------------------
 @login_required
@@ -169,7 +157,7 @@ def lost_found_feed(request):
     choice = request.GET.get('type')  # 'report' or 'found'
 
     if request.method == "POST":
-        # --- Comment Submission ---
+        # Comment submission
         if 'comment_text' in request.POST:
             post_id = request.POST.get("post_id")
             comment_text = request.POST.get("comment_text")
@@ -178,7 +166,7 @@ def lost_found_feed(request):
             messages.success(request, "Comment added ✅")
             return redirect(f"{request.path}?type=found")
 
-        # --- Lost/Found Report Submission ---
+        # Lost/Found report submission
         status = request.POST.get('status')
         department = request.POST.get('department')
         location = request.POST.get('location')
@@ -201,7 +189,6 @@ def lost_found_feed(request):
         messages.success(request, f"{status.capitalize()} item reported successfully ✅")
         return redirect('lost_found_feed')
 
-    # --- Display Found Items ---
     found_posts = None
     if choice == 'found':
         found_posts = Issue.objects.filter(category='lost_found', status='found').order_by('-created_at')
@@ -211,7 +198,6 @@ def lost_found_feed(request):
         'found_posts': found_posts
     }
     return render(request, 'campus_fixer/lost_found_feed.html', context)
-
 
 # ---------------------- REAL-TIME RESOLVED COUNT ----------------------
 def issues_resolved_count(request):
