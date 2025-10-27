@@ -91,28 +91,36 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--dark); b
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <a href="{% url 'index' %}" class="logo">
-                    <div class="logo-icon"><i class="fas fa-tools"></i></div>
-                    <span>UAP Campus Fixer</span>
-                </a>
-                <ul class="nav-links">
-                    <li><a href="{% url 'index' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'dashboard' %}" class="{% if 'dashboard' in request.path %}active{% endif %}">Dashboard</a></li>
-                        <li><a href="{% url 'report_issue' %}" class="{% if 'report' in request.path %}active{% endif %}">Report Issue</a></li>
-                        <li><a href="{% url 'track_issue' %}" class="{% if 'track' in request.path %}active{% endif %}">Track Issue</a></li>
-                        <li><a href="{% url 'lost_found_feed' %}" class="{% if 'lost-found' in request.path %}active{% endif %}">Lost & Found</a></li>
-                        <li><a href="{% url 'logout' %}" class="btn-secondary"><i class="fas fa-sign-out-alt"></i> Logout ({{ user.username }})</a></li>
-                    {% else %}
-                        <li><a href="{% url 'register' %}" class="btn-secondary"><i class="fas fa-user-plus"></i> Register</a></li>
-                        <li><a href="{% url 'login' %}" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-                    {% endif %}
-                </ul>
+    <div class="container">
+        <nav class="nav">
+            <a href="{% url 'index' %}" class="logo">
+                <div class="logo-icon"><i class="fas fa-tools"></i></div>
+                <span>UAP Campus Fixer</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url 'index' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}" class="{% if 'dashboard' in request.path %}active{% endif %}">Dashboard</a></li>
+                    <li><a href="{% url 'report_issue' %}" class="{% if 'report' in request.path %}active{% endif %}">Report Issue</a></li>
+                    <li><a href="{% url 'track_issue' %}" class="{% if 'track' in request.path %}active{% endif %}">Track Issue</a></li>
+                    <li><a href="{% url 'lost_found_feed' %}" class="{% if 'lost-found' in request.path %}active{% endif %}">Lost & Found</a></li>
+                    <li><a href="{% url 'logout' %}" class="btn-secondary"><i class="fas fa-sign-out-alt"></i> Logout ({{ user.username }})</a></li>
+                {% else %}
+                    <li><a href="{% url 'register' %}" class="btn-secondary"><i class="fas fa-user-plus"></i> Register</a></li>
+                    <li><a href="{% url 'login' %}" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                {% endif %}
+            </ul>
+
+            <!-- Hamburger Menu -->
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+             </div>
             </nav>
-        </div>
-    </header>
+         </div>
+     </header>
+
 
     <main class="content">
         {% if messages %}
