@@ -2,128 +2,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UAP Campus Fixer - {% block title %}Home{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAP Campus Fixer - {% block title %}Home{% endblock %}</title>
 
-<!-- Font Awesome & Google Fonts -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-:root {
-    --primary: #ffffffff;
-    --primary-dark: #4f46e5;
-    --secondary: #10b981;
-    --accent: #f59e0b;
-    --dark: #1f2937;
-    --light: #f8fafc;
-    --gray: #6b7280;
-    --success: #10b981;
-    --error: #ef4444;
+    <style>
+        :root {
+            --primary: #ffffffff;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+        }
+
+        /* Containers */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .content {
+            margin-top: 0;
+            min-height: calc(100vh - 160px);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: -100px;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: top 0.3s ease-in-out;
+            background: rgba(45, 57, 183, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99,102,241,0.8), rgba(79,70,229,0.7)),
+            url('{% static "campus_fixer/images/campus.JPG" %}') center/cover no-repeat;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: #fff;
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #9ca3af;
+            line-height: 1.6;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Messages */
+        .messages {
+            margin-bottom: 2rem;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border-color: var(--success);
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            border-color: var(--error);
+            color: #991b1b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        background: rgba(45, 57, 183, 0.95);
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        width: 200px;
+        padding: 1rem;
+        border-radius: 12px;
+        gap: 1rem;
+        transform: translateY(-20px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 1.8rem;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .nav-links a {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
 }
 
-/* Reset */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--dark); background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; }
-
-/* Containers */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-.content { margin-top: 0; min-height: calc(100vh - 160px); }
-
-/* Header */
-.header {
-    position: fixed;
-    top: -100px; /* hidden by default */
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    transition: top 0.3s ease-in-out;
-    background: rgba(45, 57, 183, 0.7); /* transparent glass effect */
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-}
-.nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
-.logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
-.logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; }
-.nav-links { display: flex; gap: 1rem; list-style: none; align-items: center; }
-.nav-links a { color: #fff; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 10px; transition: all 0.3s ease; }
-.nav-links a:hover, .nav-links a.active { color: var(--primary); background: rgba(255,255,255,0.1); }
-
-/* Hero Section */
-.hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; position: relative; overflow: hidden; }
-.hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(99,102,241,0.8), rgba(79,70,229,0.7)), url('{% static "campus_fixer/images/campus.JPG" %}') center/cover no-repeat;
-    z-index: -1;
-}
-.hero-content { max-width: 800px; padding: 2rem; }
-.hero h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.2; }
-.hero p { font-size: 1.3rem; margin-bottom: 2.5rem; opacity: 0.9; font-weight: 300; }
-
-/* Buttons */
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 12px; font-weight: 600; font-size: 1rem; text-decoration: none; border: none; cursor: pointer; position: relative; overflow: hidden; transition: all 0.3s ease; }
-.btn-primary { background: linear-gradient(135deg, var(--secondary), #059669); color: #fff; }
-.btn-secondary { background: rgba(255,255,255,0.2); color: #fff; border: 2px solid rgba(255,255,255,0.3); }
-
-/* Footer */
-.footer { background: var(--dark); color: #fff; padding: 3rem 0 2rem; }
-.footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 2rem; }
-.footer-section h3 { margin-bottom: 1.5rem; font-size: 1.3rem; }
-.footer-section p, .footer-section a { color: #9ca3af; line-height: 1.6; text-decoration: none; }
-.footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid #374151; color: #9ca3af; }
-
-/* Messages */
-.messages { margin-bottom: 2rem; }
-.alert { padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid; }
-.alert-success { background: #d1fae5; border-color: var(--success); color: #065f46; }
-.alert-error { background: #fee2e2; border-color: var(--error); color: #991b1b; }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hero h1 { font-size: 2.5rem; }
-    .hero p { font-size: 1.1rem; }
-    .nav-links { display: none; }
-}
-</style>
+    </style>
 </head>
+
 <body>
-    <!-- Header -->
-    <header class="header">
+
+<header class="header">
     <div class="container">
         <nav class="nav">
             <a href="{% url 'index' %}" class="logo">
                 <div class="logo-icon"><i class="fas fa-tools"></i></div>
                 <span>UAP Campus Fixer</span>
             </a>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+
             <ul class="nav-links">
                 <li><a href="{% url 'index' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
+
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'dashboard' %}" class="{% if 'dashboard' in request.path %}active{% endif %}">Dashboard</a></li>
                     <li><a href="{% url 'report_issue' %}" class="{% if 'report' in request.path %}active{% endif %}">Report Issue</a></li>
                     <li><a href="{% url 'track_issue' %}" class="{% if 'track' in request.path %}active{% endif %}">Track Issue</a></li>
                     <li><a href="{% url 'lost_found_feed' %}" class="{% if 'lost-found' in request.path %}active{% endif %}">Lost & Found</a></li>
                     <li><a href="{% url 'logout' %}" class="btn-secondary"><i class="fas fa-sign-out-alt"></i> Logout ({{ user.username }})</a></li>
+
                 {% else %}
                     <li><a href="{% url 'register' %}" class="btn-secondary"><i class="fas fa-user-plus"></i> Register</a></li>
                     <li><a href="{% url 'login' %}" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Login</a></li>
                 {% endif %}
             </ul>
 
-            <!-- Hamburger Menu -->
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-             </div>
-            </nav>
-         </div>
-     </header>
+        </nav>
+    </div>
+</header>
 
-
-    <main class="content">
-        {% if messages %}
+<main class="content">
+    {% if messages %}
         <div class="container messages">
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">
@@ -132,60 +324,74 @@ body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--dark); b
                 </div>
             {% endfor %}
         </div>
-        {% endif %}
+    {% endif %}
 
-        {% block content %}
-        <!-- Hero/Features/Stats placeholders -->
-        {% endblock %}
-    </main>
+    {% block content %}
+    {% endblock %}
+</main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>UAP Campus Fixer</h3>
-                    <p>Revolutionizing campus maintenance through technology and innovation.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="{% url 'index' %}">Home</a></li>
-                        <li><a href="{% url 'report_issue' %}">Report Issue</a></li>
-                        <li><a href="{% url 'track_issue' %}">Track Issue</a></li>
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                            <li><a href="{% url 'lost_found_feed' %}">Lost & Found</a></li>
-                        {% else %}
-                            <li><a href="{% url 'login' %}">Login</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact Info</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> UAP Campus, Dhaka</p>
-                    <p><i class="fas fa-phone"></i> +880 XXXX-XXXXXX</p>
-                    <p><i class="fas fa-envelope"></i> support@uapcampufixer.edu</p>
-                </div>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+
+            <div class="footer-section">
+                <h3>UAP Campus Fixer</h3>
+                <p>Revolutionizing campus maintenance through technology and innovation.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 UAP Campus Fixer. All rights reserved By ROKON & SHAJALAL.</p>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'report_issue' %}">Report Issue</a></li>
+                    <li><a href="{% url 'track_issue' %}">Track Issue</a></li>
+
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'lost_found_feed' %}">Lost & Found</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
             </div>
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> UAP Campus, Dhaka</p>
+                <p><i class="fas fa-phone"></i> +880 XXXX-XXXXXX</p>
+                <p><i class="fas fa-envelope"></i> support@uapcampufixer.edu</p>
+            </div>
+
         </div>
-    </footer>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 UAP Campus Fixer. All rights reserved By ROKON & SHAJALAL.</p>
+        </div>
+
+    </div>
+</footer>
 
 <script>
-let header = document.querySelector('.header');
+    let header = document.querySelector('.header');
+    document.addEventListener('mousemove', e => {
+        if(e.clientY < 50){
+            header.style.top = '0';
+        } else if(window.scrollY === 0){
+            header.style.top = '-100px';
+        }
+    });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
 
-// Show navbar when mouse is near top
-document.addEventListener('mousemove', e => {
-    if(e.clientY < 50){
-        header.style.top = '0';
-    } else if(window.scrollY === 0){
-        header.style.top = '-100px';
-    }
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
 });
 </script>
+
 
 </body>
 </html>

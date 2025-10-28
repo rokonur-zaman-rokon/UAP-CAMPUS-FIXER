@@ -13,8 +13,7 @@ SECRET_KEY = 'django-insecure-arr_5obaia4-hv=0bhh38&i&wzca)=isi$-9dmc$ox!z4)1d$p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
-ALLOWED_HOSTS = ['uapcampusfixer.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver','uapcampusfixer.pythonanywhere.com']
 
 # Application definition
 

@@ -94,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Update clock every second if element exists
     if (document.getElementById('live-clock')) {
         setInterval(updateClock, 1000);
         updateClock();
@@ -114,6 +113,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Dynamic content loading for better UX
+    // Fixed Header Behavior
+
+    const header = document.querySelector('.header');
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    // Desktop hide/show on mouse movement
+    if (window.innerWidth > 768) {
+        document.addEventListener('mousemove', (e) => {
+            if (e.clientY < 50) {
+                header.style.top = '0';
+            } else if (window.scrollY === 0) {
+                header.style.top = '-100px';
+            }
+        });
+    } else {
+        // Mobile always fixed
+        header.style.position = 'fixed';
+        header.style.top = '0';
+    }
+
+    // Toggle mobile menu
+    if (hamburger) {
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Initialize System
     console.log('UAP Campus Fixer - System Initialized');
 });
