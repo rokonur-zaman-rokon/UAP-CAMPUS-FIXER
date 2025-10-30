@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UAP Campus Fixer - {% block title %}Home{% endblock %}</title>
 
-    <!-- Font Awesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -238,45 +237,54 @@
             border-color: var(--error);
             color: #991b1b;
         }
+        
+        /* --- START OF HAMBURGER FIX --- */
+        
+        /* Hides the hamburger menu icon on large screens */
+        .menu-toggle {
+            display: none; 
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
-    .nav-links {
-        display: flex;
-        flex-direction: column;
-        background: rgba(45, 57, 183, 0.95);
-        position: absolute;
-        top: 70px;
-        right: 20px;
-        width: 200px;
-        padding: 1rem;
-        border-radius: 12px;
-        gap: 1rem;
-        transform: translateY(-20px);
-        opacity: 0;
-        pointer-events: none;
-        transition: all 0.3s ease;
-    }
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                background: rgba(45, 57, 183, 0.95);
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                width: 200px;
+                padding: 1rem;
+                border-radius: 12px;
+                gap: 1rem;
+                transform: translateY(-20px);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s ease;
+            }
 
-    .nav-links.active {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
+            .nav-links.active {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
 
-    .menu-toggle {
-        display: block;
-        font-size: 1.8rem;
-        color: #fff;
-        cursor: pointer;
-    }
+            .menu-toggle {
+                /* Overrides the 'display: none' above, making it visible on mobile */
+                display: block; 
+                font-size: 1.8rem;
+                color: #fff;
+                cursor: pointer;
+            }
 
-    .nav-links a {
-        display: block;
-        width: 100%;
-        text-align: left;
-    }
-}
+            .nav-links a {
+                display: block;
+                width: 100%;
+                text-align: left;
+            }
+        }
+        /* --- END OF HAMBURGER FIX --- */
 
     </style>
 </head>
@@ -386,9 +394,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
 
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
+    if (menuToggle) { // Added check to prevent error if menuToggle is hidden/null
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
 });
 </script>
 
