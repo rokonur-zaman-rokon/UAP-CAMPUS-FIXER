@@ -14,4 +14,7 @@ urlpatterns = [
     path('update-issue/<str:ticket_id>/', views.update_issue, name='update_issue'),
     path('lost-found-feed/', views.lost_found_feed, name='lost_found_feed'),
     path('ajax/resolved-count/', views.issues_resolved_count, name='issues_resolved_count'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    # other routes...
+    path('track/<str:ticket_id>/', views.track_issue_detail, name='track_issue_detail'),
 ]

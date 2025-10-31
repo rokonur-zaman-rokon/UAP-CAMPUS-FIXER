@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Issue, UserProfile, LostFoundComment
 import re
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from campus_fixer.models import Issue
 
 # ---------------------- HOME ----------------------
 def index(request):
@@ -220,3 +223,19 @@ def lost_found_feed(request):
 def issues_resolved_count(request):
     resolved_count = Issue.objects.filter(status='resolved').count()
     return JsonResponse({'resolved_count': resolved_count})
+
+#custom admin dashboard
+@login_required
+def admin_dashboard(request):
+    context = {
+        'total_issues': Issue.objects.count(),
+        'pending_count': Issue.objects.filter(status='pending').count(),
+        'in_progress_count': Issue.objects.filter(status='in_progress').count(),
+        'resolved_count': Issue.objects.filter(status='resolved').count(),
+        'all_issues': Issue.objects.order_by('-created_at')[:10],
+    }
+    return render(request, 'campus_fixer/admin_dashboard.html', context)
+
+def track_issue_detail(request, ticket_id):
+    issue = get_object_or_404(Issue, ticket_id=ticket_id)
+    return render(request, 'campus_fixer/track_issue_detail.html', {'issue': issue})
