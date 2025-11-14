@@ -93,3 +93,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Login redirects
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
+
+#asmin sms
+SMS_API_KEY = "c6DKj9k9iXZ8u00FbsXFMQ7yrJwsFuC4V2IvHml8"
+ADMIN_PHONE = "8801995494987"   # where notifications will go

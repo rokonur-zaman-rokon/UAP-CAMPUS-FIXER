@@ -4,3 +4,7 @@ from django.apps import AppConfig
 class CampusFixerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'campus_fixer'
+
+
+    def ready(self):
+        import campus_fixer.signals
